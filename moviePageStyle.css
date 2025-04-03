@@ -1,0 +1,232 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,500;1,500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    background-color: #252524;
+    color: #4e4e4e;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #252524;
+    padding: 20px;
+    color: white;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+header .circle-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: #fff;
+    
+}
+
+header .logo h1 {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+header nav {
+    margin-left: auto; 
+}
+
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+header nav ul li.user-icon img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+header nav ul li.user-icon img:hover {
+    transform: scale(1.1);
+}
+.movie-content{
+    display: flex;
+    align-items: flex-start;
+    padding: 100px;
+    height: 100vh;
+}
+.movie-image{
+    display: flex;
+    flex: 0.3;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin-right: 5px;
+    
+}
+.movie-image img{
+    width: 550px;
+    border-radius: 10px;
+}
+.movie-details{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    align-items: flex-start;
+}
+.movie-details h1{
+    display: flex;
+    color: white;
+    font-size: 44px;
+    font-family: 'Poppins';
+    align-items: center;
+    margin: 50px;
+    margin-bottom: 0px;
+    padding: 15px;
+}
+.movie-info{
+    color: white;
+    margin-left: 70px;
+    font-size: 18px;
+    font-weight: bold;
+}
+.movie-details p{
+    display: flex;
+    color: white;
+    font-size: 16px;
+    font-family: 'Open Sans';
+    margin-right: 150px;
+    margin-left: 55px;
+    padding: 15px;
+}
+.buttons {
+    margin-top: 20px;
+    margin-left: 65px;
+    display: flex;
+    gap: 15px;
+}
+
+#cinema-type {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+    margin-bottom: 20px;
+    margin-left: 70px;
+}
+#cinema-type img {
+    height: 20px; 
+}
+#showtime-container {
+    margin-top: 20px;
+}
+#current-date {
+    font-size: 18px;
+    font-weight: bold;
+    color: white;
+}
+.showtime-options {
+    display: flex;
+    margin-left: 65px;
+    gap: 10px;
+    margin-top: 10px;
+}
+.showtime-btn {
+    border: 2px solid black;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background-color: white;
+    border-radius: 15px;
+    transition: background 0.3s ease;
+}
+.showtime-btn:hover {
+    background-color: #ddd;
+}
+
+
+#ticket-container {
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    margin-top: 20px;
+    display: none;
+    background: white;
+    margin-left: 70px;
+    border-radius: 10px;
+    box-shadow: 20px 35px 35px rgba(0, 0, 0, 0.5);
+}
+
+.showtime-btn {
+    padding: 10px;
+    margin: 5px;
+    background-color: #ff4500;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.showtime-btn:hover {
+    background-color: #7b290b;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+footer {
+    background-color: #252524;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+#proceed-btn-container {
+    text-align: right;
+    margin-top: 10px;
+}
+
+#proceed-btn{
+    padding: 10px;
+    font-family: "Montserrat", sans-serif;
+}

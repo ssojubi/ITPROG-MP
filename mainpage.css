@@ -1,0 +1,333 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:ital,wght@0,500;1,500&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    
+    
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #252524;
+    padding: 20px;
+    color: white;
+}
+
+header .logo {
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+}
+
+header .circle-logo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+    background-color: #fff;
+    
+}
+
+header .logo h1 {
+    font-family: "Bebas Neue", sans-serif;
+    font-size: 2.5rem;
+    letter-spacing: 2px;
+    font-weight: 600;
+}
+
+header nav {
+    margin-left: auto; 
+}
+
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+header nav ul li.user-icon img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+header nav ul li.user-icon img:hover {
+    transform: scale(1.1);
+}
+
+/* Hero Section */
+.hero {
+    background-image: url('director.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    color: white;
+    position: relative;
+    padding: 20px;
+}
+
+.hero-text {
+    background: #252524;
+    padding: 20px 40px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.hero-text h2 {
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.hero-text p {
+    font-size: 1.4rem;
+    font-style: italic;
+}
+
+
+.movie-section {
+    text-align: center;
+    padding: 60px 0;
+    background-color: #252524;
+    
+}
+
+.movie-section h2 {
+    font-size: 2.8rem;
+    color: white;
+}
+
+.movie-section p {
+    font-size: 1.2rem;
+    color: white;
+    
+}
+
+.movie-list {
+    display: inline-grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.movie-list button {
+    padding: 50px 20px;
+    font-size: 1.5rem;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all ease-in-out 0.5s;
+    background-size: cover;
+    background-position: center;
+    width: 200px;
+    height: 500px;
+    object-fit: cover;
+    box-shadow: 20px 35px 35px rgba(0, 0, 0, 0.5);
+}
+
+.movie {
+    padding: 10px;
+    border-radius: 10px;
+    transition: transform 0.3s ease-in-out;
+    text-align: center; /* Ensures image stays centered */
+}
+.movie img {
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: all ease-in-out 0.5s;
+    background-size: cover;
+    background-position: center;
+    width: 200px;
+    height: 500px;
+    object-fit: cover;
+    box-shadow: 20px 35px 35px rgba(0, 0, 0, 0.5);
+}
+
+.movie:hover {
+    transform: scale(1.1); /* Slight zoom effect */
+}
+
+
+.movie-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.movie-details {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    width: 100%;
+}
+
+.movie-details h3 {
+    font-size: 1.8rem;
+    color: white;
+}
+
+.movie-details p {
+    font-size: 1.1rem;
+    color: white;
+}
+
+.movie-description {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding: 60px 20px;
+    background-color: #252524;
+}
+
+.description-container {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.view-all-movies {
+    margin-top: 20px;
+}
+
+.view-all-movies button {
+    background-color: #ff4500;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+
+.slideshow-container {
+    width: 50%;
+    max-width: 600px;
+    position: relative;
+}
+
+.slide {
+    display: none;
+    width: 100%;
+    
+}
+
+.slide img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 20px 35px 35px rgba(0, 0, 0, 0.5);
+    
+    
+}
+
+.text-content {
+    max-width: 400px;
+    text-align: left;
+}
+
+.text-content h2 {
+    font-size: 2rem;
+    color: white;
+}
+
+.text-content p {
+    font-size: 1.2rem;
+    color: white;
+}
+
+.coming-movie{
+    text-align: center;
+    padding: 60px 0;
+    background-color: #252524;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.coming-movie h2{
+    font-size: 2.8rem;
+    color: white;
+}
+
+.carousel{
+    overflow: hidden;
+    width: 1500px;
+    padding: 30px 0;
+    border-radius: 5px;
+    box-shadow: 20px 35px 35px rgba(0, 0, 0, 0.5);
+}
+
+.carousel-cont{
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 250px;
+    justify-items: stretch;
+    animation: animation 12s linear infinite;
+}
+
+.carousel-cont img{
+    width: 200px;
+    height: 500px;
+    border-radius: 12px;
+    object-fit: cover;
+    border: 1px solid #212121;
+}
+
+@keyframes animation{
+    from {
+        transform: translateX(0);
+    }
+    to {
+        transform: translateX(-50%);
+    }
+}
+footer {
+    background-color: #252524;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+}
