@@ -3,6 +3,14 @@
 session_start();
 include("connection.php");
 
+// Check if user is logged in
+if (!isset($_SESSION['email'])) {
+    // Store current URL in session to redirect back after login
+    $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
+    header("Location: loginpage.php");
+    exit();
+}
+
 // Get movie & showtime ID
 $showtime_id = isset($_GET['showtime_id']) ? intval($_GET['showtime_id']) : 1;
 $qty = isset($_GET['qty']) ? intval($_GET['qty']) : 1; // *added to handle the number of tickets
@@ -32,11 +40,17 @@ $movie_title = $movie['title'];
 mysqli_stmt_close($stmt);
 
 // Get all seats with their status
-$sql = "SELECT sl.seat_id, sl.seat_row, sl.seat_number, 
-               COALESCE(b.status, 'available') AS seat_stat
-        FROM seats sl
-        LEFT JOIN booking_seats b ON sl.seat_id = b.seat_id AND b.showtime_id = ?
-        WHERE sl.cinema_id = ?";
+$sql = "SELECT s.seat_id, s.seat_row, s.seat_number, 
+               CASE WHEN bs.status = 'sold' THEN 'sold' ELSE 'available' END AS seat_stat
+        FROM seats s
+        LEFT JOIN (
+            SELECT seat_id, status 
+            FROM booking_seats 
+            WHERE showtime_id = ?
+        ) bs ON s.seat_id = bs.seat_id
+        WHERE s.cinema_id = ?
+        ORDER BY s.seat_row, s.seat_number";
+
 $stmt = mysqli_prepare($conn, $sql);
 mysqli_stmt_bind_param($stmt, "ii", $showtime_id, $cinema_id);
 mysqli_stmt_execute($stmt);
@@ -105,12 +119,13 @@ mysqli_close($conn);
         }
 
         .sold {
-            background-color: lightgray;
-            color: #777;
+            background-color:rgb(168, 166, 166);
+            color: white;
+            cursor: not-allowed;
         }
 
         .available {
-            background-color: #444;
+            background-color: #444444;
             color: white;
             cursor: pointer;
         }
@@ -169,6 +184,11 @@ mysqli_close($conn);
             cursor: pointer;
             font-weight: bold;
         }
+
+        .pay-btn:disabled {
+            background-color: #ff9999;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -189,8 +209,9 @@ mysqli_close($conn);
                     <?php
                     // Define seat classes based on booking status
                     $seat_class = ($seat['seat_stat'] === 'sold') ? 'seat sold' : 'seat available';
+                    $seat_code = $row_label . $seat['seat_number'];
                     ?>
-                    <div class="<?php echo $seat_class; ?>">
+                    <div class="<?php echo $seat_class; ?>" data-seat="<?php echo $seat_code; ?>">
                         <?php echo $seat['seat_number']; ?>
                     </div>
                 <?php endforeach; ?>
@@ -210,7 +231,7 @@ mysqli_close($conn);
         </div>
     </div>
     <div class="pay-cont">
-        <button class="pay-btn" onclick="proceedToPayment()">
+        <button id="pay-btn" class="pay-btn" onclick="proceedToPayment()" disabled>
             Proceed to Payment
         </button>
     </div>
@@ -231,15 +252,18 @@ mysqli_close($conn);
 
         availableSeats.forEach(seat => {
             seat.addEventListener('click', function() {
-                const seatRow = this.parentElement.querySelector('.seat-label').textContent;
-                const seatNumber = this.textContent.trim();
-                const seatCode = seatRow + seatNumber;
+                const seatCode = this.getAttribute('data-seat');
 
                 if (this.classList.contains('selected')) {
                     // Deselect seat
                     this.classList.remove('selected');
                     selectedSeats = selectedSeats.filter(s => s !== seatCode);
                 } else {
+                    // Check if maximum seats are already selected
+                    if (selectedSeats.length >= maxSeats) {
+                        alert(`You can only select ${maxSeats} seat(s).`);
+                        return;
+                    }
                     // Select seat
                     this.classList.add('selected');
                     selectedSeats.push(seatCode);
@@ -249,9 +273,12 @@ mysqli_close($conn);
                 updateProceedButton();
             });
         });
+
+        // Initial button state update
+        updateProceedButton();
     });
 
-    function updateProceedButton() { // *changed to handle max seats of tickets sold 'qty'
+    function updateProceedButton() {
         const proceedBtn = document.getElementById('pay-btn');
 
         if (selectedSeats.length === maxSeats) {
@@ -263,7 +290,7 @@ mysqli_close($conn);
         }
     }
 
-    function proceedToPayment() { // *changed to only pass when max seats of tickets 'qty' are selected
+    function proceedToPayment() {
         if (selectedSeats.length !== maxSeats) {
             alert(`Please select exactly ${maxSeats} seat(s).`);
             return;
@@ -272,8 +299,9 @@ mysqli_close($conn);
         // Get the showtime_id from the URL
         const urlParams = new URLSearchParams(window.location.search);
         const showtime_id = urlParams.get('showtime_id');
+        const movie_id = <?php echo $movie_id; ?>;
 
         // Redirect to payment page with selected seats
-        window.location.href = `payPage.php?showtime_id=${showtime_id}&seats=${selectedSeats.join(',')}&qty=${maxSeats}&movie_id=${<?php echo $movie_id; ?>}`;
+        window.location.href = `payPage.php?showtime_id=${showtime_id}&seats=${selectedSeats.join(',')}&movie_id=${movie_id}`;
     }
 </script>

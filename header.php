@@ -1,14 +1,12 @@
 <header>
-    <div class="circle-logo">
-        <img src="" alt="" />
-    </div>
+    <div class="circle-logo"></div>
     <div class="logo">
         <h1>THE PREMIERE CLUB</h1>
     </div>
 
     <nav>
         <ul>
-            <li><a href="mainpage.php">Home<?php echo $_SESSION['email']; ?></a></li>
+            <li><a href="mainpage.php">Home <?php echo $_SESSION['email'] ?></a></li>
             <li><a href="allMovies.php">Movies</a></li>
             <li><a href="viewCinemas.php">Cinemas</a></li>
             <?php

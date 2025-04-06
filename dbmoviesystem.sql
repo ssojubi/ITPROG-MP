@@ -183,16 +183,22 @@ CREATE TABLE seats (
 
 -- Create a booking_seats junction table to record which seats are in which bookings
 CREATE TABLE booking_seats (
-    booking_seat_id INT AUTO_INCREMENT PRIMARY KEY,
-    seat_id INT NOT NULL,
-    showtime_id INT NOT NULL,
+    booking_id INT AUTO_INCREMENT PRIMARY KEY,
+    booking_reference VARCHAR(50) NOT NULL,
     customer_email VARCHAR(45) NOT NULL,
-    booking_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('booked', 'cancelled') DEFAULT 'booked',
+    movie_id INT NOT NULL,
+    showtime_id INT NOT NULL,
+    seat_id INT NOT NULL,
+    total_price DECIMAL(10,2) NOT NULL,
+    booking_timestamp DATETIME NOT NULL,
+    payment_status ENUM('pending', 'completed', 'failed') DEFAULT 'completed',
+    FOREIGN KEY (movie_id) REFERENCES movies(movie_id),
     FOREIGN KEY (seat_id) REFERENCES seats(seat_id),
     FOREIGN KEY (showtime_id) REFERENCES showtimes(showtime_id),
     FOREIGN KEY (customer_email) REFERENCES accounts(email_address),
     UNIQUE KEY unique_seat_showtime (seat_id, showtime_id, customer_email)
+
+    -- ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- Create procedures to generate seats for each cinema type

@@ -2,6 +2,13 @@
 session_start();
 include("connection.php");
 
+if (!isset($_SESSION['email'])) {
+    // Store current URL in session to redirect back after login
+    $_SESSION['redirect_after_login'] = $_SERVER['REQUEST_URI'];
+    header("Location: loginpage.php");
+    exit();
+}
+
 // Fetch all cinemas from the database
 $sql = "SELECT cinema_id, name, description, image FROM cinemas";
 $result = $conn->query($sql);
