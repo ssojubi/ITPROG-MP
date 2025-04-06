@@ -38,10 +38,9 @@ $error_message = "";
 mysqli_begin_transaction($conn);
 
 try {
-    // For each seat, get the seat_id and update the status
     // Process each seat
     foreach ($seats as $seat_string) {
-        // Parse seat string (e.g., "A1" to row "A" and number "1")
+        // Parse seat string 
         preg_match('/^([A-Z])(\d+)$/', trim($seat_string), $matches);
         $seat_row = $matches[1];
         $seat_number = intval($matches[2]);

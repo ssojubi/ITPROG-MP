@@ -6,7 +6,6 @@
     
     // Only process if the form was submitted
     if(isset($_POST['login'])) {
-        // Prevent SQL injection by using prepared statements
         $email = $_POST['email'];
         $password = $_POST['password'];
 

@@ -41,12 +41,12 @@ mysqli_stmt_close($stmt);
 
 // Get all seats with their status
 $sql = "SELECT s.seat_id, s.seat_row, s.seat_number, 
-               CASE WHEN bs.status = 'sold' THEN 'sold' ELSE 'available' END AS seat_stat
+               CASE WHEN bs.seat_id IS NOT NULL THEN 'sold' ELSE 'available' END AS seat_stat
         FROM seats s
         LEFT JOIN (
-            SELECT seat_id, status 
-            FROM booking_seats 
-            WHERE showtime_id = ?
+            SELECT bs.seat_id
+            FROM booking_seats bs
+            WHERE bs.showtime_id = ? AND bs.payment_status = 'completed'
         ) bs ON s.seat_id = bs.seat_id
         WHERE s.cinema_id = ?
         ORDER BY s.seat_row, s.seat_number";
@@ -119,7 +119,7 @@ mysqli_close($conn);
         }
 
         .sold {
-            background-color:rgb(168, 166, 166);
+            background-color: rgb(168, 166, 166);
             color: white;
             cursor: not-allowed;
         }
