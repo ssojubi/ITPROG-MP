@@ -172,7 +172,7 @@ header nav ul li.user-icon img:hover {
     background-color: #ddd;
 }
 
-
+/* 
 #ticket-container {
     display: flex;
     flex-direction: column;
@@ -183,7 +183,7 @@ header nav ul li.user-icon img:hover {
     margin-left: 70px;
     border-radius: 10px;
     box-shadow: 20px 35px 35px rgba(0, 0, 0, 0.5);
-}
+} */
 
 .showtime-btn {
     padding: 10px;

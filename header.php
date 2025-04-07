@@ -6,7 +6,7 @@
 
     <nav>
         <ul>
-            <li><a href="mainpage.php">Home <?php echo $_SESSION['email'] ?></a></li>
+            <li><a href="mainpage.php">Home </a></li>
             <li><a href="allMovies.php">Movies</a></li>
             <li><a href="viewCinemas.php">Cinemas</a></li>
             <?php

@@ -216,7 +216,7 @@ if ($all_success) {
             
             <div class="buttons">
                 <a href="mainpage.php" class="btn btn-secondary">Back to Home</a>
-                <a href="#" class="btn btn-primary">View My Bookings</a>
+                <a href="#viewaccount.php" class="btn btn-primary">View My Bookings</a>
             </div>
         <?php else: ?>
             <div class="error-container">
@@ -227,7 +227,7 @@ if ($all_success) {
             
             <div class="buttons">
                 <a href="mainpage.php" class="btn btn-secondary">Back to Home</a>
-                <a href="#" class="btn btn-primary">Contact Support</a>
+                <!-- <a href="#" class="btn btn-primary">Contact Support</a> -->
             </div>
         <?php endif; ?>
     </div>
