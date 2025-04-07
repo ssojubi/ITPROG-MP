@@ -94,7 +94,6 @@ $result = $conn->query($sql);
 
     <footer>
         <p>&copy; 2025 The Premiere Club. All Rights Reserved.</p>
-        <a href="#">Login</a> | <a href="#">Sign Up</a>
     </footer>
 
     <?php $conn->close(); ?>

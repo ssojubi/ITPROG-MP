@@ -112,19 +112,15 @@ $result = $conn->query($sql);
 
         <div class="carousel">
             <div class="carousel-cont">
-                <img src="ballerina.jpg" alt="">
-                <img src="thunder-poster.jpeg" alt="">
-                <img src="red-poster.jpg" alt="">
-                <img src="super-poster.jpg" alt="">
-                <img src="hit-poster.jpg" alt="">
-                <img src="httyd-poster.jpg" alt="">
-                <img src="monk-poster.jpg" alt="">
-                <img src="jojo.jpg" alt="">
-                <img src="acu-poster.jpg" alt="">
-                <img src="super-poster.jpeg" alt="">
-                <img src="hit-poster.jpg" alt="">
-                <img src="httyd-poster.jpg" alt="">
-
+                <img src="cs-28yrslater.jpg" alt="">
+                <img src="cs-wickedforgood.jpg" alt="">
+                <img src="cs-theritual.jpg" alt="">
+                <img src="cs-conjuring-lastrites.jpg" alt="">
+                <img src="cs-toystory5.png" alt="">
+                <img src="cs-ff4.jpg" alt="">
+                <img src="cs-avenger-secretwars.jpg" alt="">
+                <img src="cs-finaldestination.jpg" alt="">
+                <img src="cs-shrek5.jpg" alt="">
             </div>
 
         </div>
@@ -158,7 +154,6 @@ $result = $conn->query($sql);
 
     <footer>
         <p>&copy; 2025 The Premiere Club. All Rights Reserved.</p>
-        <a href="#">Login</a> | <a href="#">Sign Up</a>
     </footer>
 </body>
 </html>

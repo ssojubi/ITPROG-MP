@@ -87,8 +87,8 @@ $conn->close();
             margin-bottom: 25px;
             overflow-x: auto;
             padding-bottom: 10px;
-            -ms-overflow-style: none;  /* IE and Edge */
-            scrollbar-width: none;  /* Firefox */
+            -ms-overflow-style: none;  
+            scrollbar-width: none; 
         }
         
         .date-selector::-webkit-scrollbar {

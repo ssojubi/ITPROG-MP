@@ -94,7 +94,6 @@ $error = "";
     
     <footer>
         <p>&copy; 2025 The Premiere Club. All Rights Reserved.</p>
-        <a href="#">Sign Up</a>
     </footer>
 </body>
 </html>

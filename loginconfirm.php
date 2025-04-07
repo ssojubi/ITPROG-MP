@@ -12,8 +12,6 @@
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-
-        // Use prepared statement to prevent SQL injection
         $sql = "SELECT email_address, account_password FROM accounts WHERE email_address = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $email);
@@ -29,11 +27,10 @@
                 $_SESSION['email'] = $row['email_address'];
                 $_SESSION['name'] = $row['account_name']; 
                 
-                // Don't store password in session for security
                 
                 // Redirect to main page
                 header("Location: mainpage.php");
-                exit(); // Important to exit after redirect
+                exit();
             } else {
                 $_SESSION['error_message'] = "Incorrect password.";
                 header("Location: loginpage.php");

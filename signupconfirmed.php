@@ -112,7 +112,6 @@ if(!$sameemail) {
     
     <footer>
         <p>&copy; 2025 The Premiere Club. All Rights Reserved.</p>
-        <a href="#">Login</a>
     </footer>
 </body>
 </html>
