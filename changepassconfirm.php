@@ -1,8 +1,6 @@
 <?php
     session_start();
     include("connection.php");
-
-    $errmessage = "";
     
     $email = $_SESSION['email'];
     $password = $_SESSION['password'];
@@ -16,20 +14,21 @@
         WHERE email_address = '$email'";
 
         if($oldpass != $password) {
-            $errmessage = "Incorrect password.";
+            $_SESSION['error_message'] = "Incorrect password.";
             header("location:changepassword.php");
         }
         else if($oldpass == $newpass) {
-            $errmessage = "Old and new passwords are the same. Please choose a different password";
+            $_SESSION['error_message'] = "Old and new passwords are the same. Please choose a different password";
             header("location:changepassword.php");
         }
         else if($newpass != $confirmpass){
-            $errmessage = "Confirmation password did not match.";
+            $_SESSION['error_message'] = "Confirmation password did not match.";
             header("location:changepassword.php");
         }
         else {
             $result = $conn->query($sql);
             $_SESSION['password'] = $newpass;
+            unset($_SESSION['error_message']);
             header("location:viewaccount.php");
         }
     }

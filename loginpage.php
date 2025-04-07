@@ -2,7 +2,8 @@
 session_start();
 include("connection.php");
 
-$error = "";
+if(isset($_SESSION['error_message']))
+    $error = $_SESSION['error_message'];
 ?>
 
 <!DOCTYPE html>
@@ -49,7 +50,6 @@ $error = "";
             color: red;
             font-size: 12px;
             margin-top: 5px;
-            display: none;
         }
         button {
             width: 100%;
@@ -86,7 +86,7 @@ $error = "";
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
-                <div class="error" id="error"><?php echo $error?></div>
+                <div class="error" id="error"><?php if(isset($_SESSION['error_message'])){ echo $error; }?></div>
             </div>
             <button type="submit" name="login" value="login">Login</button>
         </form>

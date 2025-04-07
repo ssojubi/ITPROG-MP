@@ -2,8 +2,6 @@
     session_start();
     include("connection.php");
 
-    $errmessage = "";
-    
     // Only process if the form was submitted
     if(isset($_POST['login'])) {
         $email = $_POST['email'];
@@ -12,7 +10,7 @@
         if ($conn->connect_error) {
             die("Connection failed: " . $conn->connect_error);
         }
-        $sql = "SELECT email_address, account_password FROM accounts WHERE email_address = ?";
+        $sql = "SELECT email_address, account_name, account_password, account_type FROM accounts WHERE email_address = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("s", $email);
         $stmt->execute();
@@ -25,8 +23,10 @@
                 // Store minimal info in session
                 $_SESSION['loggedin'] = true;
                 $_SESSION['email'] = $row['email_address'];
+                $_SESSION['password'] = $row['account_password'];
                 $_SESSION['name'] = $row['account_name']; 
-                
+                $_SESSION['type'] = $row['account_type']; 
+                unset($_SESSION['error_message']);
                 
                 // Redirect to main page
                 header("Location: mainpage.php");

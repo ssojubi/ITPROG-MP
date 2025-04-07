@@ -1,6 +1,9 @@
 <?php
 session_start();
 include("connection.php");
+
+if(isset($_SESSION['error_message']))
+    $error = $_SESSION['error_message'];
 ?>
 
 <!DOCTYPE html>
@@ -47,7 +50,6 @@ include("connection.php");
             color: red;
             font-size: 12px;
             margin-top: 5px;
-            display: none;
         }
         button {
             width: 100%;
@@ -84,6 +86,7 @@ include("connection.php");
             <div class="form-group">
                 <label for="confirm-password">Confirm New Password</label>
                 <input type="password" id="confirm-password" name="confirm-password" required>
+                <div class="error" id="error"><?php if(isset($_SESSION['error_message'])){ echo $error; }?></div>
             </div>
             <button type="submit" name="changepass" value="changepass">Submit</button>
         </form>

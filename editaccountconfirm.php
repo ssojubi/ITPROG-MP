@@ -1,8 +1,6 @@
 <?php
     session_start();
     include("connection.php");
-
-    $errmessage = "";
     
     $email = $_SESSION['email'];
     $password = $_SESSION['password'];
@@ -18,10 +16,11 @@
 
         if($password == $confirmpass) {
             $result = $conn->query($sql);
+            unset($_SESSION['error_message']);
             header("location:viewaccount.php");
         }
         else {
-            $errmessage = "Incorrect password.";
+            $_SESSION['error_message'] = "Incorrect password.";
             header("location:editaccount.php");
         }
     }

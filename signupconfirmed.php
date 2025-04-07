@@ -14,7 +14,7 @@ $sameemail = false;
 $result2;
 $affected = 0;
 
-$insert = "INSERT INTO accounts VALUES ('$email', '$fullname', '$birthdate', '$contact', '$password')";
+$insert = "INSERT INTO accounts VALUES ('$email', '$fullname', '$birthdate', '$contact', '$password', 'customer')";
 
 while($row = mysqli_fetch_array($result)) {
     if($row['email_address'] == $email)

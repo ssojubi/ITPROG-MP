@@ -95,13 +95,13 @@ CREATE TABLE `showtimes` (
 -- Dumping data for table `showtimes`
 --
 
-INSERT INTO `showtimes` (`showtime_id`, `movie_id`, `cinema_id`, `time`, `price`) VALUES
-(1, 1, 1, '04:30:00', 250.00),
-(2, 1, 2, '06:00:00', 500.00),
-(3, 1, 3, '07:30:00', 350.00),
-(4, 2, 1, '08:00:00', 250.00),
-(5, 5, 2, '12:00:00', 500.00),
-(6, 4, 3, '03:00:00', 350.00),
+INSERT INTO `showtimes` (`showtime_id`, `movie_id`, `cinema_id`, `time`, `price`, `showtime_date`) VALUES
+(1, 1, 1, '04:30:00', 250.00, '2025-04-07'),
+(2, 1, 2, '06:00:00', 500.00, '2025-04-07'),
+(3, 1, 3, '07:30:00', 350.00, '2025-04-07'),
+(4, 2, 1, '08:00:00', 250.00, '2025-04-07'),
+(5, 5, 2, '12:00:00', 500.00, '2025-04-07'),
+(6, 4, 3, '03:00:00', 350.00, '2025-04-07'),
 (7, 2, 2, '11:00:00', 250.00, '2025-04-07'),
 (8, 2, 3, '20:30:00', 350.00, '2025-04-07'),
 (9, 3, 1, '13:00:00', 250.00, '2025-04-07'),
@@ -200,7 +200,8 @@ CREATE TABLE accounts (
     account_name VARCHAR(45) NOT NULL,
     birth_date DATE NOT NULL,
     contact_number int(11),
-    account_password VARCHAR(45) NOT NULL
+    account_password VARCHAR(45) NOT NULL,
+    account_type ENUM('admin', 'customer') DEFAULT 'customer'
 );
 
 -- Create the seats table

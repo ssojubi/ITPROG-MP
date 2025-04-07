@@ -4,6 +4,9 @@ include("connection.php");
 
 $email = $_SESSION['email'];
 
+if(isset($_SESSION['error_message']))
+    $error = $_SESSION['error_message'];
+
 $sql = "SELECT account_name, birth_date, contact_number FROM accounts WHERE email_address = '$email'";
 $result = $conn->query($sql);
 list($name, $birthdate, $contact) = mysqli_fetch_row($result);
@@ -53,7 +56,6 @@ list($name, $birthdate, $contact) = mysqli_fetch_row($result);
             color: red;
             font-size: 12px;
             margin-top: 5px;
-            display: none;
         }
         button {
             width: 100%;
@@ -94,6 +96,7 @@ list($name, $birthdate, $contact) = mysqli_fetch_row($result);
             <div class="form-group">
                 <label for="password">Enter Password</label>
                 <input type="password" id="password" name="password" required>
+                <div class="error" id="error"><?php if(isset($_SESSION['error_message'])){ echo $error; }?></div>
             </div>
             <button type="submit" name="edit" value="edit">Submit</button>
         </form>
