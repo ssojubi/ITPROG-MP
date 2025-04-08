@@ -2,7 +2,7 @@
 session_start();
 include("connection.php");
 
-$sql = "SELECT movie_id, title, poster FROM movies";
+$sql = "SELECT movie_id, title, poster FROM movies WHERE show_status = 'showing'";
 $result = $conn->query($sql);
 ?>
 
