@@ -38,7 +38,7 @@ if (isset($_GET['seats'])) {
 
 // Initialize variables
 $movie_title = "";
-$movie_date = date("m/d/Y");
+$movie_date = "";
 $movie_time = "";
 $movie_price = 0;
 $cinema_name = "";
@@ -59,8 +59,8 @@ if ($movie_result && mysqli_num_rows($movie_result) > 0) {
 }
 
 
-// Directly query the showtimes table
-$time_sql = "SELECT s.time, s.price, s.cinema_id FROM showtimes s WHERE s.showtime_id = ?";
+// Directly query the showtimes table, now including showtime_date
+$time_sql = "SELECT s.time, s.showtime_date, s.price, s.cinema_id FROM showtimes s WHERE s.showtime_id = ?";
 $stmt = mysqli_prepare($conn, $time_sql);
 mysqli_stmt_bind_param($stmt, "i", $showtime_id);
 mysqli_stmt_execute($stmt);
@@ -69,10 +69,12 @@ $time_result = mysqli_stmt_get_result($stmt);
 if ($time_result && mysqli_num_rows($time_result) > 0) {
     $time_row = mysqli_fetch_assoc($time_result);
     $movie_time = $time_row['time'];
+    $movie_date = $time_row['showtime_date']; // Get the actual movie date
     $movie_price = $time_row['price'];
     $cinema_id = $time_row['cinema_id'];
 } else {
     $movie_time = "No time found";
+    $movie_date = date("Y-m-d"); // Fallback to today's date if not found
     $movie_price = 0;
 }
 
@@ -98,6 +100,9 @@ $total_price = $movie_price * $num_seats;
 
 // Format seats array into comma-separated string
 $seats_str = implode(", ", $seats);
+
+// Format date for display
+$movie_date_display = date("m/d/Y", strtotime($movie_date));
 
 // Format time for display (if it exists)
 if (!empty($movie_time) && $movie_time != "No time found") {
@@ -217,6 +222,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             'cinema_id' => $cinema_id,
             'movie_title' => $movie_title,
             'cinema_name' => $cinema_name,
+            'movie_date' => $movie_date_display, 
             'movie_time' => $movie_time_display
         ];
         
@@ -416,7 +422,7 @@ function getValue($field) {
             <div class="border-cont summary">
                 <p><strong>Movie:</strong> <?php echo htmlspecialchars($movie_title); ?></p>
                 <p><strong>Cinema:</strong> <?php echo htmlspecialchars($cinema_name); ?></p>
-                <p><strong>Date:</strong> <?php echo htmlspecialchars($movie_date); ?></p>
+                <p><strong>Date:</strong> <?php echo htmlspecialchars($movie_date_display); ?></p>
                 <p><strong>Time:</strong> <?php echo htmlspecialchars($movie_time_display); ?></p>
                 <p><strong>Seats:</strong> <?php echo htmlspecialchars($seats_str); ?></p>
                 <p><strong>Price per Ticket:</strong> ₱<?php echo number_format($movie_price, 2); ?></p>
