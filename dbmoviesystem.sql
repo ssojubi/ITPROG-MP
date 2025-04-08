@@ -52,29 +52,30 @@ INSERT INTO `cinemas` (`cinema_id`, `name`, `description`, `image`) VALUES
 CREATE TABLE `movies` (
   `movie_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
-  `duration` varchar(150) NOT NULL,
+  `duration` varchar(150),
   `genre` varchar(255) NOT NULL,
   `rating` varchar(10) NOT NULL,
   `description` text NOT NULL,
   `poster` varchar(255) NOT NULL,
-  `trailer_link` varchar(255) DEFAULT NULL
+  `trailer_link` varchar(255) DEFAULT NULL,
+  `show_status` enum('finished','showing','comingsoon') DEFAULT 'comingsoon'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `movies`
 --
 
-INSERT INTO `movies` (`movie_id`, `title`, `duration`, `genre`, `rating`, `description`, `poster`, `trailer_link`) VALUES
-(1, 'Ballerina', '1 hour 45 mins', 'Action/Thriller', 'SPG', 'An assassin trained in the traditions of the Ruska Roma organization sets out to seek revenge after her fathers death.', 'ballerina.jpg', 'https://www.youtube.com/embed/0FSwsrFpkbw?si=5_21o5qaKl59_-qh'),
-(2, 'Captain America : Brave New World', '2 hour 30 mins', 'Adventure/Superhero/Action/Thriller/Sci-Fi', 'PG', 'Sam Wilson, the new Captain America, finds himself in the middle of an international incident and must discover the motive behind a nefarious global plan.', 'cap-poster.png', 'https://www.youtube.com/embed/1pHDWnXmK7Y?si=3baic73lyHYRr0C9'),
-(3, 'Superman', '2 hour 15 mins', 'Superhero/Action/Adventure/Sci-Fi', 'PG', 'Follows the titular superhero as he reconciles his heritage with his human upbringing. He is the embodiment of truth, justice and the human way in a world that views this as old-fashioned.', 'super-poster.jpg', 'https://www.youtube.com/embed/uhUht6vAsMY?si=MNOUbtecIujYhMSo'),
-(4, 'How to Train Your Dragon', '1 hour 45 mins', 'Teen Fantasy/Action/Adventure/Fantasy', 'PG', 'As an ancient threat endangers both Vikings and dragons alike on the isle of Berk, the friendship between Hiccup, an inventive Viking, and Toothless, a Night Fury dragon, becomes the key to both species forging a new future together.', 'httyd-poster.jpg', 'https://www.youtube.com/embed/22w7z_lT6YM?si=lpYWZhlTJG0JJVWI'),
-(5, 'Alien: Romulus', '2 hour 45 mins', 'Monster Horror/Space Sci-fi/Horror/Thriller', 'R', 'While scavenging the deep ends of a derelict space station, a group of young space colonists come face to face with the most terrifying life form in the universe.', 'red-poster.jpg', 'https://www.youtube.com/embed/OzY2r2JXsDM?si=f4w2Nwqmz50oz6HD'),
-(6, 'Thunderbolts*', '2 hour 30 mins', 'Superhero/Action/Adventure/Crime/Sci-fi', 'PG', 'After finding themselves ensnared in a death trap, an unconventional team of antiheroes must embark on a dangerous mission that will force them to confront the darkest corners of their pasts.', 'thunder-poster.jpeg', 'https://www.youtube.com/embed/bqnRzjPfb5A?si=jklfYJQIACDrKfrE'),
-(7, 'A Complete Unknown', '1 hour 50 mins', 'Docudrama/Period Drama/Biography/Music', 'R', 'In 1961, an unknown 19-year-old Bob Dylan arrives in New York City with his guitar and forges relationships with musical icons on his meteoric rise, culminating in a groundbreaking performance that reverberates around the world.', 'acu-poster.jpg', 'https://www.youtube.com/embed/FdV-Cs5o8mc?si=_08rUmAnjEhIamy9'),
-(8, 'Hit Man', '1 hour 55 mins', 'Docudrama/Romantic Comedy/Crime/Romance', 'R', 'A professor moonlighting as a hit man of sorts for his city police department, descends into dangerous, dubious territory when he finds himself attracted to a woman who enlists his services.', 'hit-poster.jpg', 'https://www.youtube.com/embed/DXwa8DKIK7g?si=PShVb8sohhskWNd_'),
-(9, 'Jojo Rabbit', '1 hour 48 mins', 'Coming-of-Age/Dark Comedy/Drama/War', 'PG-13', 'A young German boy in the Hitler Youth, whose hero and imaginary friend is the countrys dictator, is shocked to discover that his mother is hiding a Jewish girl in their home.', 'jojo.jpg', 'https://www.youtube.com/embed/tL4McUzXfFI?si=b3LQSHTzl9TrP613'),
-(10, 'The Monkey', '1 hour 39 mins', 'Dark Comedy/Splatter Horror/Horror', 'R', 'When twin brothers Bill and Hal find their fathers old monkey toy in the attic, a series of gruesome deaths start. The siblings decide to throw the toy away and move on with their lives, growing apart over the years.', 'monk-poster.jpg', 'https://www.youtube.com/embed/husMGbXEIho?si=heiRRGOfKUcmMJ7e');
+INSERT INTO `movies` (`movie_id`, `title`, `duration`, `genre`, `rating`, `description`, `poster`, `trailer_link`, `show_status`) VALUES
+(1, 'Ballerina', '1 hour 45 mins', 'Action/Thriller', 'SPG', 'An assassin trained in the traditions of the Ruska Roma organization sets out to seek revenge after her fathers death.', 'ballerina.jpg', 'https://www.youtube.com/embed/0FSwsrFpkbw?si=5_21o5qaKl59_-qh', 'showing'),
+(2, 'Captain America : Brave New World', '2 hour 30 mins', 'Adventure/Superhero/Action/Thriller/Sci-Fi', 'PG', 'Sam Wilson, the new Captain America, finds himself in the middle of an international incident and must discover the motive behind a nefarious global plan.', 'cap-poster.png', 'https://www.youtube.com/embed/1pHDWnXmK7Y?si=3baic73lyHYRr0C9', 'showing'),
+(3, 'Superman', '2 hour 15 mins', 'Superhero/Action/Adventure/Sci-Fi', 'PG', 'Follows the titular superhero as he reconciles his heritage with his human upbringing. He is the embodiment of truth, justice and the human way in a world that views this as old-fashioned.', 'super-poster.jpg', 'https://www.youtube.com/embed/uhUht6vAsMY?si=MNOUbtecIujYhMSo', 'showing'),
+(4, 'How to Train Your Dragon', '1 hour 45 mins', 'Teen Fantasy/Action/Adventure/Fantasy', 'PG', 'As an ancient threat endangers both Vikings and dragons alike on the isle of Berk, the friendship between Hiccup, an inventive Viking, and Toothless, a Night Fury dragon, becomes the key to both species forging a new future together.', 'httyd-poster.jpg', 'https://www.youtube.com/embed/22w7z_lT6YM?si=lpYWZhlTJG0JJVWI', 'showing'),
+(5, 'Alien: Romulus', '2 hour 45 mins', 'Monster Horror/Space Sci-fi/Horror/Thriller', 'R', 'While scavenging the deep ends of a derelict space station, a group of young space colonists come face to face with the most terrifying life form in the universe.', 'red-poster.jpg', 'https://www.youtube.com/embed/OzY2r2JXsDM?si=f4w2Nwqmz50oz6HD', 'showing'),
+(6, 'Thunderbolts*', '2 hour 30 mins', 'Superhero/Action/Adventure/Crime/Sci-fi', 'PG', 'After finding themselves ensnared in a death trap, an unconventional team of antiheroes must embark on a dangerous mission that will force them to confront the darkest corners of their pasts.', 'thunder-poster.jpeg', 'https://www.youtube.com/embed/bqnRzjPfb5A?si=jklfYJQIACDrKfrE', 'showing'),
+(7, 'A Complete Unknown', '1 hour 50 mins', 'Docudrama/Period Drama/Biography/Music', 'R', 'In 1961, an unknown 19-year-old Bob Dylan arrives in New York City with his guitar and forges relationships with musical icons on his meteoric rise, culminating in a groundbreaking performance that reverberates around the world.', 'acu-poster.jpg', 'https://www.youtube.com/embed/FdV-Cs5o8mc?si=_08rUmAnjEhIamy9', 'showing'),
+(8, 'Hit Man', '1 hour 55 mins', 'Docudrama/Romantic Comedy/Crime/Romance', 'R', 'A professor moonlighting as a hit man of sorts for his city police department, descends into dangerous, dubious territory when he finds himself attracted to a woman who enlists his services.', 'hit-poster.jpg', 'https://www.youtube.com/embed/DXwa8DKIK7g?si=PShVb8sohhskWNd_', 'showing'),
+(9, 'Jojo Rabbit', '1 hour 48 mins', 'Coming-of-Age/Dark Comedy/Drama/War', 'PG-13', 'A young German boy in the Hitler Youth, whose hero and imaginary friend is the countrys dictator, is shocked to discover that his mother is hiding a Jewish girl in their home.', 'jojo.jpg', 'https://www.youtube.com/embed/tL4McUzXfFI?si=b3LQSHTzl9TrP613', 'showing'),
+(10, 'The Monkey', '1 hour 39 mins', 'Dark Comedy/Splatter Horror/Horror', 'R', 'When twin brothers Bill and Hal find their fathers old monkey toy in the attic, a series of gruesome deaths start. The siblings decide to throw the toy away and move on with their lives, growing apart over the years.', 'monk-poster.jpg', 'https://www.youtube.com/embed/husMGbXEIho?si=heiRRGOfKUcmMJ7e', 'showing');
 
 -- --------------------------------------------------------
 
