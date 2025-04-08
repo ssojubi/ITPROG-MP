@@ -22,6 +22,7 @@ $movie_id = $payment_info['movie_id'];
 $showtime_id = $payment_info['showtime_id'];
 $seats = $payment_info['seats'];
 $seats_str = $payment_info['seats_str'];
+$showtime_date = $payment_info['movie_date'];
 $total_price = $payment_info['total_price'];
 $name = $payment_info['name'];
 $booking_reference = $payment_info['booking_reference'];
@@ -206,7 +207,7 @@ if ($all_success) {
                 <p><strong>Booking Reference:</strong> <?php echo htmlspecialchars($booking_reference); ?></p>
                 <p><strong>Movie:</strong> <?php echo htmlspecialchars($movie_title); ?></p>
                 <p><strong>Cinema:</strong> <?php echo htmlspecialchars($cinema_name); ?></p>
-                <p><strong>Date:</strong> <?php echo date("m/d/Y"); ?></p>
+                <p><strong>Date:</strong> <?php echo htmlspecialchars($showtime_date); ?></p>
                 <p><strong>Time:</strong> <?php echo htmlspecialchars($movie_time); ?></p>
                 <p><strong>Seats:</strong> <?php echo htmlspecialchars($seats_str); ?></p>
                 <p><strong>Total Amount:</strong> ₱<?php echo number_format($total_price, 2); ?></p>
@@ -216,7 +217,7 @@ if ($all_success) {
             
             <div class="buttons">
                 <a href="mainpage.php" class="btn btn-secondary">Back to Home</a>
-                <a href="#viewaccount.php" class="btn btn-primary">View My Bookings</a>
+                <a href="viewaccount.php" class="btn btn-primary">View My Bookings</a>
             </div>
         <?php else: ?>
             <div class="error-container">

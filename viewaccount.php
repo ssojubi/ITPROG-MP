@@ -8,30 +8,11 @@ $sql = "SELECT account_name, birth_date, contact_number FROM accounts WHERE emai
 $result = $conn->query($sql);
 list($name, $birthdate, $contact) = mysqli_fetch_row($result);
 
-// Query to get user's bookings
-// $bookingsQuery = "SELECT 
-//     bs.booking_reference,
-//     m.title AS movie_title,
-//     DATE_FORMAT(bs.booking_timestamp, '%d %b %Y') AS booking_date,
-//     TIME_FORMAT(st.time, '%h:%i %p') AS show_time,
-//     GROUP_CONCAT(DISTINCT CONCAT(s.seat_row, s.seat_number) ORDER BY s.seat_row, s.seat_number SEPARATOR ', ') AS seats,
-//     SUM(bs.total_price) AS total_price,
-//     bs.booking_timestamp,
-//     bs.payment_status,
-//     c.name
-// FROM booking_seats bs
-// JOIN movies m ON bs.movie_id = m.movie_id
-// JOIN showtimes st ON bs.showtime_id = st.showtime_id
-// JOIN seats s ON bs.seat_id = s.seat_id
-// JOIN cinemas c ON st.cinema_id = c.cinema_id
-// WHERE bs.customer_email = ?
-// GROUP BY bs.booking_reference, m.title, st.time, bs.payment_status, c.name, bs.booking_timestamp
-// ORDER BY bs.booking_timestamp DESC";
-// Query to get user's bookings
+
 $bookingsQuery = "SELECT 
     bs.booking_reference,
     m.title AS movie_title,
-    DATE_FORMAT(DATE(bs.booking_timestamp), '%d %b %Y') AS show_date,
+    DATE_FORMAT(st.showtime_date, '%d %b %Y') AS show_date,
     TIME_FORMAT(st.time, '%h:%i %p') AS show_time,
     GROUP_CONCAT(DISTINCT CONCAT(s.seat_row, s.seat_number) ORDER BY s.seat_row, s.seat_number SEPARATOR ', ') AS seats,
     bs.total_price,
@@ -44,7 +25,7 @@ JOIN showtimes st ON bs.showtime_id = st.showtime_id
 JOIN seats s ON bs.seat_id = s.seat_id
 JOIN cinemas c ON st.cinema_id = c.cinema_id
 WHERE bs.customer_email = ?
-GROUP BY bs.booking_reference, m.title, st.time, bs.total_price, bs.booking_timestamp, bs.payment_status, c.name
+GROUP BY bs.booking_reference, m.title, st.showtime_date, st.time, bs.total_price, bs.booking_timestamp, bs.payment_status, c.name
 ORDER BY bs.booking_timestamp DESC";
 
 $stmt = mysqli_prepare($conn, $bookingsQuery);
