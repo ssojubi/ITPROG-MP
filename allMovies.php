@@ -94,8 +94,7 @@ $result = $stmt->get_result();
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 15px;
-            margin-left: 25%;
-            margin-right: 25%;
+            width: 90%;
             border-left: 4px solid #ff4500;
             text-align: left;
             display:grid;
@@ -141,8 +140,9 @@ $result = $stmt->get_result();
         }
         .movie-list-admin {
             display: inline-grid;
-            grid-template-columns: repeat(1, 1fr);
+            grid-template-columns: repeat(2, 1fr);
             gap: 10px;
+            justify-items: center;
         }
         button {
             width: 150px;
@@ -239,9 +239,9 @@ $result = $stmt->get_result();
                         </div>
                         
                         <div class="button-list">
-                            <form method="post" action="viewmovieshowtimes.php">
+                            <form method="post" action="viewshowtimes.php">
                                 <input type="hidden" name="movieid" value="<?php echo htmlspecialchars($row['movie_id']); ?>">
-                                <button type="submit" name="viewmovieshowtimes" value="viewmovieshowtimes">View Showtimes</button>
+                                <button type="submit" name="viewshowtimes" value="viewshowtimes">View Showtimes</button>
                             </form>
 
                             <form method="post" action="editmovie.php">

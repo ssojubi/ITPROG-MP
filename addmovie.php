@@ -56,7 +56,7 @@ if(isset($_SESSION['error_message']))
             margin-top: 5px;
         }
         button {
-            width: 100%;
+            width: 150px;
             padding: 12px;
             background-color: #ff4500;
             color: white;
@@ -72,10 +72,12 @@ if(isset($_SESSION['error_message']))
 </head>
 <body>
     <?php include("header.php");?>
-    
+    <form id="previous-form" action="allmovies.php">
+        <button type="submit" class="previous" name="previous" value="previous">Go Back</button>
+    </form>
     <div class="container">
         <h2>Add Movie</h2>
-        <form id="movieedit-form" action="addmovieconfirm.php" method="POST">
+        <form id="movieadd-form" action="addmovieconfirm.php" method="POST" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="title">Title</label>
                 <?php echo '<input type="text" id="title" name="title" required>'; ?>
@@ -95,6 +97,10 @@ if(isset($_SESSION['error_message']))
             <div class="form-group">
                 <label for="trailer">Trailer Link</label>
                 <?php echo '<input type="text" id="trailerlink" name="trailerlink" required>'; ?>
+            </div>
+            <div class="form-group">
+                <label for="poster">Poster Image</label>
+                <?php echo '<input type="file" id="poster" name="poster" required>'; ?>
             </div>
             <div class="error" id="error"><?php if(isset($_SESSION['error_message'])){ echo $error; }?></div>
             <button type="submit" name="add" value="add">Submit</button>

@@ -8,15 +8,17 @@ if(isset($_SESSION['type']) && $_SESSION['type'] != 'admin')
 if(isset($_SESSION['error_message']))
     $error = $_SESSION['error_message'];
 
-$movieid = $_POST['movieid'];
+$showtimeid = $_POST['showtimeid'];
 
-$sql = "SELECT * FROM movies WHERE movie_id = ?";
+$sql = "SELECT *
+FROM showtimes 
+WHERE showtime_id = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $movieid);
+$stmt->bind_param("s", $showtimeid);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$row = $result->fetch_assoc();
+$showtime = $result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -82,49 +84,34 @@ $row = $result->fetch_assoc();
 </head>
 <body>
     <?php include("header.php");?>
-    <form id="previous-form" action="allmovies.php">
+    <form id="previous-form" action="viewshowtimes.php" method="post">
+        <input type="hidden" id="movieid" name="movieid" value="<?php echo $showtime['movie_id']; ?>">
         <button type="submit" class="previous" name="previous" value="previous">Go Back</button>
     </form>
     <div class="container">
-        <h2>Edit Movie</h2>
-        <form id="movieedit-form" action="editmovieconfirm.php" method="POST" enctype="multipart/form-data">
-            <input type="hidden" id="movieid" name="movieid" value="<?php echo $row['movie_id']; ?>">
-            <input type="hidden" id="oldposter" name="oldposter" value="<?php echo $row['poster']; ?>">
+        <h2>Edit Showtime</h2>
+        <form id="showtimeedit-form" action="editshowtimeconfirm.php" method="POST">
+            <input type="hidden" id="showtimeid" name="showtimeid" value="<?php echo $showtimeid; ?>">
+            <input type="hidden" id="movieid" name="movieid" value="<?php echo $showtime['movie_id']; ?>">
             <div class="form-group">
-                <label for="title">Title</label>
-                <?php echo '<input type="text" id="title" name="title" value="'. $row['title']. '" required>'; ?>
-            </div>
-            <div class="form-group">
-                <label for="duration">Duration</label>
-                <?php echo '<input type="text" id="duration" name="duration" value="'. $row['duration']. '" required>'; ?>
-            </div>
-            <div class="form-group">
-                <label for="genre">Genre</label>
-                <?php echo '<input type="text" id="genre" name="genre" value="'. $row['genre']. '" required>'; ?>
-            </div>
-            <div class="form-group">
-                <label for="rating">Rating</label>
-                <?php echo '<input type="text" id="rating" name="rating" value="'. $row['rating']. '" required>'; ?>
-            </div>
-            <div class="form-group">
-                <label for="description">Description</label>
-                <?php echo '<textarea id="description" name="description" cols="40" rows="10" required>'. $row['description']. '</textarea>'; ?>
-            </div>
-            <div class="form-group">
-                <label for="status">Status</label>
-                <select id="status" name="status">
-                    <option value="finished">Finished</option>
-                    <option value="showing">Showing</option>
-                    <option value="comingsoon">Coming Soon</option>
+                <label for="cinema">Cinema</label>
+                <select id="cinema" name="cinema" selected="<?php echo $showtime['cinema_id']; ?>">
+                    <option value="1">Premiere Club</option>
+                    <option value="2">Directors Club</option>
+                    <option value="3">IMAX</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="trailer">Trailer Link</label>
-                <?php echo '<input type="text" id="trailerlink" name="trailerlink" value="'. $row['trailer_link']. '" required>'; ?>
+                <label for="date">Date</label>
+                <?php echo '<input type="date" id="date" name="date" value="'. $showtime['showtime_date']. '" required>'; ?>
             </div>
             <div class="form-group">
-                <label for="poster">Poster Image (Optional)</label>
-                <?php echo '<input type="file" id="poster" name="poster">'; ?>
+                <label for="time">Time</label>
+                <?php echo '<input type="time" id="time" name="time" value="'. $showtime['time']. '" required>'; ?>
+            </div>
+            <div class="form-group">
+                <label for="price">Price</label>
+                <?php echo '<input type="number" id="price" name="price" value="'. $showtime['price']. '" required>'; ?>
             </div>
             <div class="error" id="error"><?php if(isset($_SESSION['error_message'])){ echo $error; }?></div>
             <button type="submit" name="edit" value="edit">Submit</button>
