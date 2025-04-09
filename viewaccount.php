@@ -51,15 +51,6 @@ if(!$isAdmin) {
     $result = $conn->query($sql);
     list($name, $birthdate, $contact) = mysqli_fetch_row($result);
     
-    // Get admin stats (can be expanded)
-    $userCountQuery = "SELECT COUNT(*) FROM accounts WHERE account_type != 'admin'";
-    $userCount = $conn->query($userCountQuery)->fetch_row()[0];
-    
-    $bookingCountQuery = "SELECT COUNT(*) FROM booking_seats";
-    $bookingCount = $conn->query($bookingCountQuery)->fetch_row()[0];
-    
-    $movieCountQuery = "SELECT COUNT(*) FROM movies";
-    $movieCount = $conn->query($movieCountQuery)->fetch_row()[0];
 }
 ?>
 
@@ -264,20 +255,6 @@ if(!$isAdmin) {
                         <h3>Movies</h3>
                         <form action="allMovies.php">
                             <button type="submit">Manage Movies</button>
-                        </form>
-                    </div>
-                    
-                    <div class="admin-card">
-                        <h3>Payments</h3>
-                        <form action="manage_payments.php">
-                            <button type="submit">Manage Payments</button>
-                        </form>
-                    </div>
-                    
-                    <div class="admin-card">
-                        <h3>Cinemas</h3>
-                        <form action="manage_cinemas.php">
-                            <button type="submit">Manage Cinemas</button>
                         </form>
                     </div>
                 </div>
