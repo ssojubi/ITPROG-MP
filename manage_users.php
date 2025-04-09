@@ -8,6 +8,41 @@ if(!isset($_SESSION['type']) || $_SESSION['type'] != 'admin') {
     exit();
 }
 
+// Handle add user action
+if(isset($_POST['add_user'])) {
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $contact = $_POST['contact'];
+    $birth_date = $_POST['birth_date'];
+    $account_type = $_POST['account_type'];
+    
+    // Check if email already exists
+    $checkEmailQuery = "SELECT COUNT(*) FROM accounts WHERE email_address = ?";
+    $stmt = $conn->prepare($checkEmailQuery);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->bind_result($emailCount);
+    $stmt->fetch();
+    $stmt->close();
+    
+    if($emailCount > 0) {
+        $addError = "Email address already exists. Please try a different email.";
+    } else {
+        // Add user
+        $addQuery = "INSERT INTO accounts (email_address, account_name, account_password, contact_number, birth_date, account_type) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($addQuery);
+        $stmt->bind_param("ssssss", $email, $name, $password, $contact, $birth_date, $account_type);
+        
+        if($stmt->execute()) {
+            $addSuccess = "User added successfully!";
+        } else {
+            $addError = "Error adding user: " . $conn->error;
+        }
+        $stmt->close();
+    }
+}
+
 // Handle delete user action
 if(isset($_POST['delete_user'])) {
     $email = $_POST['user_email'];
@@ -161,10 +196,21 @@ $result = $stmt->get_result();
     <div class="container">
         <div class="page-header">
             <h1 class="page-title">User Management</h1>
-            <a href="viewaccount.php" class="back-button">← Back to Dashboard</a>
+            <div class="header-actions">
+                <a href="adduser.php" class="primary-button">Add User</a>
+                <a href="viewaccount.php" class="back-button">← Back to Dashboard</a>
+            </div>
         </div>
         
         <!-- Success/Error Messages -->
+        <?php if(isset($addSuccess)): ?>
+            <div class="alert alert-success"><?php echo $addSuccess; ?></div>
+        <?php endif; ?>
+        
+        <?php if(isset($addError)): ?>
+            <div class="alert alert-error"><?php echo $addError; ?></div>
+        <?php endif; ?>
+        
         <?php if(isset($deleteSuccess)): ?>
             <div class="alert alert-success"><?php echo $deleteSuccess; ?></div>
         <?php endif; ?>
@@ -221,7 +267,7 @@ $result = $stmt->get_result();
                                 <?php if($row['account_type'] == 'admin'): ?>
                                     <span class="user-type user-type-admin">Admin</span>
                                 <?php else: ?>
-                                    <span class="user-type user-type-customer">Customer</span>
+                                    <span class="user-type user-type-regular">Customer</span>
                                 <?php endif; ?>
                             </td>
                             <td>
@@ -297,29 +343,33 @@ $result = $stmt->get_result();
     
     <script>
         // Delete confirmation modal
-        const modal = document.getElementById("deleteModal");
-        const closeBtn = document.getElementsByClassName("close")[0];
-        const cancelBtn = document.getElementById("cancelDelete");
+        const deleteModal = document.getElementById("deleteModal");
+        const deleteCloseBtn = document.getElementsByClassName("close")[0];
+        const cancelDeleteBtn = document.getElementById("cancelDelete");
         const deleteUserName = document.getElementById("deleteUserName");
         const deleteUserEmail = document.getElementById("deleteUserEmail");
         
         function confirmDelete(email, userName) {
-            modal.style.display = "block";
+            deleteModal.style.display = "block";
             deleteUserName.textContent = userName;
             deleteUserEmail.value = email;
         }
         
-        closeBtn.onclick = function() {
-            modal.style.display = "none";
+        deleteCloseBtn.onclick = function() {
+            deleteModal.style.display = "none";
         }
         
-        cancelBtn.onclick = function() {
-            modal.style.display = "none";
+        cancelDeleteBtn.onclick = function() {
+            deleteModal.style.display = "none";
         }
         
+        // Close modals when clicking outside
         window.onclick = function(event) {
-            if (event.target == modal) {
-                modal.style.display = "none";
+            if (event.target == deleteModal) {
+                deleteModal.style.display = "none";
+            }
+            if (event.target == addUserModal) {
+                addUserModal.style.display = "none";
             }
         }
     </script>

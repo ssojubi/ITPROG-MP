@@ -248,7 +248,6 @@ if(!$isAdmin) {
                 <div class="admin-dashboard">
                     <div class="admin-card">
                         <h3>Users</h3>
-                        <p><?php echo $userCount; ?></p>
                         <form action="manage_users.php">
                             <button type="submit">Manage Users</button>
                         </form>
@@ -256,7 +255,6 @@ if(!$isAdmin) {
                     
                     <div class="admin-card">
                         <h3>Bookings</h3>
-                        <p><?php echo $bookingCount; ?></p>
                         <form action="manage_bookings.php">
                             <button type="submit">Manage Bookings</button>
                         </form>
@@ -264,7 +262,6 @@ if(!$isAdmin) {
                     
                     <div class="admin-card">
                         <h3>Movies</h3>
-                        <p><?php echo $movieCount; ?></p>
                         <form action="allMovies.php">
                             <button type="submit">Manage Movies</button>
                         </form>
