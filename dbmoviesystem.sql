@@ -97,44 +97,45 @@ CREATE TABLE `showtimes` (
 --
 
 INSERT INTO `showtimes` (`showtime_id`, `movie_id`, `cinema_id`, `time`, `price`, `showtime_date`) VALUES
-(1, 1, 1, '04:30:00', 250.00, '2025-04-07'),
-(2, 1, 2, '06:00:00', 500.00, '2025-04-07'),
-(3, 1, 3, '07:30:00', 350.00, '2025-04-07'),
-(4, 2, 1, '08:00:00', 250.00, '2025-04-07'),
-(5, 5, 2, '12:00:00', 500.00, '2025-04-07'),
-(6, 4, 3, '03:00:00', 350.00, '2025-04-07'),
-(7, 2, 2, '11:00:00', 250.00, '2025-04-07'),
-(8, 2, 3, '20:30:00', 350.00, '2025-04-07'),
-(9, 3, 1, '13:00:00', 250.00, '2025-04-07'),
-(10, 3, 2, '16:45:00', 500.00, '2025-04-07'),
-(11, 4, 1, '11:30:00', 250.00, '2025-04-07'),
-(12, 4, 2, '14:00:00', 500.00, '2025-04-07'),
+-- April 10, 2025 (Tomorrow)
+(1, 1, 1, '10:30:00', 250.00, '2025-04-10'),
+(2, 1, 2, '14:00:00', 500.00, '2025-04-10'),
+(3, 1, 3, '17:30:00', 350.00, '2025-04-10'),
+(4, 2, 1, '14:00:00', 250.00, '2025-04-10'), 
+(5, 5, 2, '17:30:00', 500.00, '2025-04-10'), 
+(6, 4, 3, '21:00:00', 350.00, '2025-04-10'), 
+(7, 3, 1, '17:30:00', 250.00, '2025-04-10'),
+(8, 2, 3, '10:30:00', 350.00, '2025-04-10'), 
+(9, 3, 2, '10:30:00', 250.00, '2025-04-10'), 
 
--- Tomorrow's showtimes (April 8, 2025)
-(13, 1, 1, '10:30:00', 250.00, '2025-04-08'),
-(14, 1, 2, '13:30:00', 500.00, '2025-04-08'),
-(15, 1, 3, '19:00:00', 350.00, '2025-04-08'),
-(16, 2, 1, '12:00:00', 250.00, '2025-04-08'),
-(17, 2, 3, '18:30:00', 350.00, '2025-04-08'),
-(18, 3, 2, '15:45:00', 500.00, '2025-04-08'),
-(19, 4, 3, '17:15:00', 350.00, '2025-04-08'),
-(20, 5, 1, '14:00:00', 250.00, '2025-04-08'),
+-- April 11, 2025
+(10, 3, 2, '15:45:00', 500.00, '2025-04-11'),
+(11, 4, 1, '11:15:00', 250.00, '2025-04-11'),
+(12, 4, 2, '19:30:00', 500.00, '2025-04-11'), 
+(13, 1, 1, '14:45:00', 250.00, '2025-04-11'), 
+(14, 1, 2, '11:45:00', 500.00, '2025-04-11'), 
+(15, 1, 3, '12:00:00', 350.00, '2025-04-11'),
+(16, 2, 1, '18:15:00', 250.00, '2025-04-11'),
+(17, 2, 3, '15:30:00', 350.00, '2025-04-11'), 
 
--- Day after tomorrow (April 9, 2025)
-(21, 6, 1, '11:00:00', 250.00, '2025-04-09'),
-(22, 6, 2, '15:00:00', 500.00, '2025-04-09'),
-(23, 7, 3, '19:30:00', 350.00, '2025-04-09'),
-(24, 8, 1, '13:30:00', 250.00, '2025-04-09'),
-(25, 9, 2, '16:30:00', 500.00, '2025-04-09'),
-(26, 10, 3, '21:00:00', 350.00, '2025-04-09'),
+-- April 12, 2025 (Weekend)
+(18, 3, 2, '10:00:00', 550.00, '2025-04-12'),
+(19, 4, 3, '13:30:00', 400.00, '2025-04-12'),
+(20, 5, 1, '14:00:00', 300.00, '2025-04-12'),
+(21, 6, 1, '10:30:00', 300.00, '2025-04-12'), 
+(22, 6, 2, '13:30:00', 550.00, '2025-04-12'), 
+(23, 7, 3, '17:00:00', 400.00, '2025-04-12'), 
+(24, 8, 1, '17:30:00', 300.00, '2025-04-12'), 
+(25, 9, 2, '17:00:00', 550.00, '2025-04-12'), 
+(26, 10, 3, '20:30:00', 400.00, '2025-04-12'), 
 
--- Weekend showtimes (April 12-13, 2025)
-(27, 1, 1, '10:00:00', 300.00, '2025-04-12'), 
-(28, 2, 2, '11:30:00', 550.00, '2025-04-12'),  
-(29, 3, 3, '14:45:00', 400.00, '2025-04-12'),  
-(30, 4, 1, '16:00:00', 300.00, '2025-04-13'), 
-(31, 5, 2, '18:30:00', 550.00, '2025-04-13'), 
-(32, 6, 3, '20:00:00', 400.00, '2025-04-13');  
+-- April 13, 2025 (Weekend)
+(27, 1, 1, '10:00:00', 300.00, '2025-04-13'),
+(28, 2, 2, '11:30:00', 550.00, '2025-04-13'),
+(29, 3, 3, '14:45:00', 400.00, '2025-04-13'),
+(30, 4, 1, '13:30:00', 300.00, '2025-04-13'), 
+(31, 5, 2, '15:00:00', 550.00, '2025-04-13'), 
+(32, 6, 3, '18:15:00', 400.00, '2025-04-13'); 
 
 --
 -- Indexes for dumped tables
@@ -205,6 +206,12 @@ CREATE TABLE accounts (
     account_type ENUM('admin', 'customer') DEFAULT 'customer'
 );
 
+-- add the into accounts table
+INSERT INTO `accounts` (`email_address`, `account_name`, `birth_date`, `contact_number`, `account_password`, `account_type`) VALUES
+("customer_one@gmail.com", "John Doe", '2000-11-16', 325557302, "customer1", "customer"),
+("customer_two@gmail.com", "Chris Evans", '1996-01-16', 335557426, "customer2", "customer"),
+("admin_one@gmail.com", "Bruce Wayne", '1975-04-08', 295555609, "admin1", "admin");
+
 -- Create the seats table
 CREATE TABLE seats (
     seat_id INT AUTO_INCREMENT PRIMARY KEY,
@@ -232,9 +239,58 @@ CREATE TABLE booking_seats (
     FOREIGN KEY (showtime_id) REFERENCES showtimes(showtime_id),
     FOREIGN KEY (customer_email) REFERENCES accounts(email_address),
     UNIQUE KEY unique_seat_showtime (seat_id, showtime_id, customer_email)
-
-    -- ON DELETE CASCADE ON UPDATE CASCADE
 );
+
+-- First, create a trigger to update seat status when a booking is deleted
+DELIMITER //
+
+CREATE TRIGGER after_booking_delete
+AFTER DELETE ON booking_seats
+FOR EACH ROW
+BEGIN
+    -- Update the seat status back to available
+    UPDATE seats
+    SET status = 'available'
+    WHERE seat_id = OLD.seat_id;
+END //
+
+DELIMITER ;
+
+-- Create a stored procedure for admins to safely delete bookings
+DELIMITER //
+
+CREATE PROCEDURE DeleteBooking(
+    IN p_booking_id INT,
+    IN p_admin_email VARCHAR(45),
+    OUT p_status VARCHAR(100)
+)
+BEGIN
+    DECLARE admin_check INT;
+    
+    -- Check if the user is an admin
+    SELECT COUNT(*) INTO admin_check
+    FROM accounts
+    WHERE email_address = p_admin_email
+    AND account_type = 'admin';
+    
+    -- Only proceed if admin
+    IF admin_check > 0 THEN
+        -- Delete the booking (trigger will handle seat status update)
+        DELETE FROM booking_seats
+        WHERE booking_id = p_booking_id;
+        
+        -- Check if deletion was successful
+        IF ROW_COUNT() > 0 THEN
+            SET p_status = 'Booking deleted successfully. Seat is now available for booking.';
+        ELSE
+            SET p_status = 'Booking not found or already deleted.';
+        END IF;
+    ELSE
+        SET p_status = 'Operation failed. Admin privileges required.';
+    END IF;
+END //
+
+DELIMITER ;
 
 -- Create procedures to generate seats for each cinema type
 DELIMITER //
