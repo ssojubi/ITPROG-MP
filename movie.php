@@ -42,7 +42,7 @@ $sql = "SELECT DISTINCT DATE(showtime_date) as available_date
         FROM showtimes 
         WHERE movie_id = ? 
         AND showtime_date BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY)
-        ORDER BY showtime_date ASC";
+        ORDER BY available_date ASC";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $movie_id);
 $stmt->execute();
