@@ -44,10 +44,19 @@
             header("location:addmovie.php");
         }
 
-        $insert = "INSERT INTO movies VALUES (11, '$title', 'TBA', '$genre', '$rating', '$description', '$fileRealName', '$trailerlink', 'comingsoon')";
+        $stmt = $conn->prepare("INSERT INTO movies (title, duration, genre, rating, description, poster, trailer_link, show_status) 
+                        VALUES (?, 'TBA', ?, ?, ?, ?, ?, 'comingsoon')");
 
-        $result = $conn->query($insert);
-        unset($_SESSION['error_message']);
-        header("location:allmovies.php");
+        $stmt->bind_param("ssssss", $title, $genre, $rating, $description, $fileRealName, $trailerlink);
+
+        if ($stmt->execute()) {
+            unset($_SESSION['error_message']);
+            header("location:allmovies.php");
+            exit();
+        } else {
+            $_SESSION['error_message'] = "Database error: " . $stmt->error;
+            header("location:addmovie.php");
+            exit();
+        }
     }
 ?>
