@@ -1,82 +1,85 @@
 <?php
-    session_start();
-    include("connection.php");
+session_start();
+include("connection.php");
 
-    if(isset($_POST['edit'])) {
-        $movieid = $_POST['movieid'];
-        $title = $_POST['title'];
-        $duration = $_POST['duration'];
-        $genre = $_POST['genre'];
-        $rating = $_POST['rating'];
-        $description = $_POST['description'];
-        $status = $_POST['status'];
-        $trailerlink = $_POST['trailerlink'];
+if(isset($_POST['edit'])) {
+    $movieid = $_POST['movieid'];
+    $title = $_POST['title'];
+    $duration = $_POST['duration'];
+    $genre = $_POST['genre'];
+    $rating = $_POST['rating'];
+    $description = $_POST['description'];
+    $status = $_POST['status'];
+    $trailerlink = $_POST['trailerlink'];
 
-        $fileOldName = $_POST['oldposter'];
+    $fileOldName = $_POST['oldposter'];
 
-        $file = $_FILES['poster'];
+    $file = $_FILES['poster'];
+    $fileRealName = $fileOldName; // Default value in case no new poster is uploaded
 
-        $fileName = $_FILES['poster']['name'];
-        $fileTmpName = $_FILES['poster']['tmp_name'];
-        $fileSize = $_FILES['poster']['size'];
-        $fileError = $_FILES['poster']['error'];
-        $fileType = $_FILES['poster']['type'];
+    // Check if a new poster is uploaded
+    if($file['size'] != 0) {
+        $fileName = $file['name'];
+        $fileTmpName = $file['tmp_name'];
+        $fileSize = $file['size'];
+        $fileError = $file['error'];
+        $fileType = $file['type'];
 
         $fileExt = explode('.', $fileName);
         $fileActualExt = strtolower(end($fileExt));
 
         $allowed = array('jpg', 'jpeg', 'png');
 
-        $fileRealName = reset($fileExt). ".". $fileActualExt;
-        
-        if($fileSize != 0) {
-            if(in_array($fileActualExt, $allowed)) {
-                if($fileError === 0){
-                    if($fileSize < 500000) {
+        // Generate new file name
+        $fileRealName = reset($fileExt) . "." . $fileActualExt;
+
+        if (in_array($fileActualExt, $allowed)) {
+            if ($fileError === 0) {
+                if ($fileSize < 500000) {
                     move_uploaded_file($fileTmpName, $fileRealName);
-                    }
-                    else {
-                        $_SESSION['error_message'] = "Image size is too large.";
-                        header("location:addmovie.php");
-                    }
+                    // Delete old poster
+                    unlink($fileOldName);
+                } else {
+                    $_SESSION['error_message'] = "Image size is too large.";
+                    header("location:editmovie.php?movieid=$movieid");
+                    exit();
                 }
-                else {
-                    $_SESSION['error_message'] = "Upload error.";
-                    header("location:addmovie.php");
-                }
+            } else {
+                $_SESSION['error_message'] = "Upload error.";
+                header("location:editmovie.php?movieid=$movieid");
+                exit();
             }
-            else {
-                $_SESSION['error_message'] = "Invalid image type.";
-                header("location:addmovie.php");
-            }
-
-            $sql = "UPDATE `movies` 
-            SET `title` = '$title', 
-            `duration` = '$duration', 
-            `genre` = '$genre',
-            `rating` = '$rating',
-            `description` = '$description',
-            `show_status` = '$status',
-            `trailer_link` = '$trailerlink',
-            `poster` = '$fileRealName'
-            WHERE `movie_id` = '$movieid'";
-
-            unlink($fileOldName);
+        } else {
+            $_SESSION['error_message'] = "Invalid image type.";
+            header("location:editmovie.php?movieid=$movieid");
+            exit();
         }
-        else {
-            $sql = "UPDATE `movies` 
-            SET `title` = '$title', 
-            `duration` = '$duration', 
-            `genre` = '$genre',
-            `rating` = '$rating',
-            `description` = '$description',
-            `show_status` = '$status',
-            `trailer_link` = '$trailerlink'
-            WHERE `movie_id` = '$movieid'";
-        }
-        
-        $result = $conn->query($sql);
+    }
+
+    // Prepare SQL query to update movie information
+    if ($file['size'] != 0) {
+        // If poster is updated, include the poster in the query
+        $sql = "UPDATE movies 
+                SET title = ?, duration = ?, genre = ?, rating = ?, description = ?, show_status = ?, trailer_link = ?, poster = ? 
+                WHERE movie_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssssssssi", $title, $duration, $genre, $rating, $description, $status, $trailerlink, $fileRealName, $movieid);
+    } else {
+        // If poster is not updated, exclude poster from the query
+        $sql = "UPDATE movies 
+                SET title = ?, duration = ?, genre = ?, rating = ?, description = ?, show_status = ?, trailer_link = ? 
+                WHERE movie_id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("sssssssi", $title, $duration, $genre, $rating, $description, $status, $trailerlink, $movieid);
+    }
+
+    // Execute the query
+    if ($stmt->execute()) {
         unset($_SESSION['error_message']);
         header("location:allmovies.php");
+    } else {
+        $_SESSION['error_message'] = "Failed to update movie.";
+        header("location:editmovie.php?movieid=$movieid");
     }
+}
 ?>
