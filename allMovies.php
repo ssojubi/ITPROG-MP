@@ -2,6 +2,12 @@
 session_start();
 include("connection.php");
 
+if(isset($_POST['previous']))
+    unset($_SESSION['error_message']);
+
+if(isset($_SESSION['error_message']))
+    $error = $_SESSION['error_message'];
+
 $sql = "";
 
 if(isset($_POST['status']))
@@ -87,6 +93,12 @@ $result = $stmt->get_result();
 
         .popup h2, p {
             margin-top: 10px; 
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+            margin-top: 5px;
         }
 
         .movie-card {
@@ -191,6 +203,8 @@ $result = $stmt->get_result();
         <form method="post" action="addmovie.php">
             <button type="submit" name="addmovie" value="addmovie">Add Movie</button>
         </form>
+
+        <div class="error" id="error"><?php if(isset($_SESSION['error_message'])){ echo $error; }?></div><br>
 
         <div class="movie-list-admin">
             <?php while ($row = $result->fetch_assoc()) : ?>

@@ -10,13 +10,34 @@ if(isset($_SESSION['error_message']))
 
 $movieid = $_POST['movieid'];
 
-$sql = "SELECT * FROM movies WHERE movie_id = ?";
+$sql = "SELECT m.movie_id AS movie_id,
+m.title AS title,
+m.duration AS duration,
+m.genre AS genre,
+m.rating AS rating,
+m.description AS description,
+m.poster AS poster,
+m.trailer_link AS trailer_link,
+m.show_status AS show_status,
+COUNT(bs.booking_id) AS quantity_booked
+FROM movies m
+LEFT JOIN showtimes s
+ON m.movie_id = s.movie_id
+LEFT JOIN booking_seats bs
+ON m.movie_id = bs.movie_id
+WHERE m.movie_id = ?
+GROUP BY m.movie_id;";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $movieid);
 $stmt->execute();
 $result = $stmt->get_result();
 
 $row = $result->fetch_assoc();
+
+if($row['quantity_booked'] > 0){
+    $_SESSION['error_message'] = "Can't delete movies with bookings.";
+    header("location:allmovies.php");
+}
 ?>
 
 <!DOCTYPE html>
@@ -187,7 +208,7 @@ $row = $result->fetch_assoc();
             <button type="submit" name="delete" value="delete">Confirm</button>
         </form>
 
-        <form id="previous-form" action="allmovies.php">
+        <form id="previous-form" action="allmovies.php" method="post">
             <button type="submit" name="previous" value="previous">Cancel</button>
         </form>
     </div>

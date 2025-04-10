@@ -72,7 +72,7 @@ if(isset($_SESSION['error_message']))
 </head>
 <body>
     <?php include("header.php");?>
-    <form id="previous-form" action="allmovies.php">
+    <form id="previous-form" action="allmovies.php" method="post">
         <button type="submit" class="previous" name="previous" value="previous">Go Back</button>
     </form>
     <div class="container">

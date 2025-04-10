@@ -18,6 +18,13 @@
         WHERE `showtime_id` = '$showtimeid'";
         
         $result = $conn->query($sql);
+
+        $sql = "UPDATE `booking_seats` 
+        SET `total_price` = '$showprice'
+        WHERE `showtime_id` = '$showtimeid'";
+
+        $result = $conn->query($sql);
+
         $_SESSION['movieid'] = $movieid;
         unset($_SESSION['error_message']);
         header("location:viewshowtimes.php");

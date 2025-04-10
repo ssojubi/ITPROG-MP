@@ -17,6 +17,18 @@ $stmt->execute();
 $result = $stmt->get_result();
 
 $row = $result->fetch_assoc();
+
+$sql = "SELECT COUNT(s.showtime_id) AS showtime_quantity
+    FROM showtimes s
+    JOIN movies m
+    ON s.movie_id = m.movie_id
+    WHERE m.movie_id = ?
+    GROUP BY m.movie_id;";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $movieid);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $showtimes = $result->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -82,7 +94,7 @@ $row = $result->fetch_assoc();
 </head>
 <body>
     <?php include("header.php");?>
-    <form id="previous-form" action="allmovies.php">
+    <form id="previous-form" action="allmovies.php" method="post">
         <button type="submit" class="previous" name="previous" value="previous">Go Back</button>
     </form>
     <div class="container">
@@ -114,7 +126,9 @@ $row = $result->fetch_assoc();
                 <label for="status">Status</label>
                 <select id="status" name="status">
                     <option value="finished">Finished</option>
-                    <option value="showing">Showing</option>
+                    <?php if ($showtimes['showtime_quantity'] > 0): ?>
+                        <option value="showing">Showing</option>
+                    <?php endif; ?>
                     <option value="comingsoon">Coming Soon</option>
                 </select>
             </div>

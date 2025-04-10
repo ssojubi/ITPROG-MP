@@ -5,6 +5,9 @@ include("connection.php");
 if(isset($_SESSION['type']) && $_SESSION['type'] != 'admin')
     header("location:mainpage.php");
 
+if(isset($_POST['previous']))
+    unset($_SESSION['error_message']);
+
 if(isset($_SESSION['error_message']))
     $error = $_SESSION['error_message'];
 
@@ -247,6 +250,7 @@ $result2 = $stmt->get_result();
             <input type="hidden" name="movieid" id="movieid" value="<?php echo $movieid; ?>">
             <button type="submit" name="add" value="add">Add Showtime</button>
         </form>
+        <div class="error" id="error"><?php if(isset($_SESSION['error_message'])){ echo $error; }?></div>
     </div>
 
     <?php if($result2->num_rows > 0): ?>
@@ -274,6 +278,7 @@ $result2 = $stmt->get_result();
                             </form>
                             <form id="deleteshowtime-form" action="deleteshowtime.php" method="POST">
                                 <input type="hidden" name="movieid" id="movieid" value="<?php echo $movieid; ?>">
+                                <input type="hidden" name="quantitybooked" id="quantitybooked" value="<?php echo $showtimes['quantity_booked']; ?>">
                                 <input type="hidden" name="showtimeid" id="showtimeid" value="<?php echo $showtimes['showtime_id']; ?>">
                                 <button type="submit" name="delete" value="delete">Delete</button>
                             </form>
