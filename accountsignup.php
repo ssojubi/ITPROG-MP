@@ -87,7 +87,8 @@ include("connection.php");
             </div>
             <div class="form-group">
                 <label for="contact">Contact Number</label>
-                <input type="tel" id="contact" name="contact" required>
+                <input type="tel" id="contact" name="contact" pattern="[0-9]+" minlength="10" maxlength="13" placeholder="+63 9XX XXX XXXX" required>
+                <small style="color: #aaa; display: block; margin-top: 5px;">Format: +639XXXXXXXXX or 09XXXXXXXXX</small>
             </div>
             <div class="form-group">
                 <label for="email">Email Address</label>
@@ -112,19 +113,31 @@ include("connection.php");
     
     <script>
         document.getElementById("signup-form").addEventListener("submit", function(event) {
-            var password = document.getElementById("password").value;
-            var confirmPassword = document.getElementById("confirm-password").value;
-            var errorDiv = document.getElementById("password-error");
-
-            if (password !== confirmPassword) {
-                errorDiv.style.display = "block";
-                alert("Passwords do not match! Please fill in all fields again.");
-                event.preventDefault(); // Prevent form submission
-                this.reset(); // Reset all form fields
-            } else {
-                errorDiv.style.display = "none";
-            }
-        });
+    var password = document.getElementById("password").value;
+    var confirmPassword = document.getElementById("confirm-password").value;
+    var errorDiv = document.getElementById("password-error");
+    var contactNumber = document.getElementById("contact").value;
+    
+    // Check password match
+    if (password !== confirmPassword) {
+        errorDiv.style.display = "block";
+        alert("Passwords do not match! Please fill in all fields again.");
+        event.preventDefault();
+        this.reset();
+        return;
+    }
+    
+    // Validate Philippine phone number format
+    // Accepts formats: +639XXXXXXXXX, 09XXXXXXXXX, or 9XXXXXXXXX
+    var phonePattern = /^(\+63|0)?9\d{9}$/;
+    if (!phonePattern.test(contactNumber)) {
+        alert("Please enter a valid Philippine mobile number (e.g., +639XXXXXXXXX or 09XXXXXXXXX)");
+        event.preventDefault();
+        return;
+    }
+    
+    errorDiv.style.display = "none";
+});
     </script>
 </body>
 </html>

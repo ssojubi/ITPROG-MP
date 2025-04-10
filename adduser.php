@@ -41,9 +41,12 @@ if(isset($_POST['add_user'])) {
         }
         $stmt->close();
     }
-    
-    if(empty($contact)) {
-        $errors[] = "Contact number is required";
+
+    if(!empty($contact)) {
+        // Validate Philippine phone number format
+        if(!preg_match('/^(\+63|0)?9\d{9}$/', $contact)) {
+            $errors[] = "Invalid Philippine mobile number format";
+        }   
     }
     
     if(empty($birthdate)) {
@@ -130,6 +133,8 @@ if(isset($_POST['add_user'])) {
                             <input type="text" id="contact" name="contact" class="form-control" value="<?php echo isset($_POST['contact']) ? htmlspecialchars($_POST['contact']) : ''; ?>">
                             <?php if(isset($errors) && in_array("Contact number is required", $errors)): ?>
                                 <span class="error-text">Contact number is required</span>
+                            <?php elseif(isset($errors) && in_array("Invalid Philippine mobile number format", $errors)): ?>
+                                <span class="error-text">Invalid Philippine mobile number format</span>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -173,5 +178,22 @@ if(isset($_POST['add_user'])) {
     <footer>
         <p>&copy; 2025 The Premiere Club. All Rights Reserved.</p>
     </footer>
+    <script>
+    document.querySelector('form').addEventListener('submit', function(event) {
+        var contactNumber = document.getElementById('contact').value;
+        
+        
+        if(contactNumber) {
+            // Validate Philippine phone number format
+            var phonePattern = /^(\+63|0)?9\d{9}$/;
+            if (!phonePattern.test(contactNumber)) {
+                alert("Please enter a valid Philippine mobile number (e.g., +639XXXXXXXXX or 09XXXXXXXXX)");
+                event.preventDefault();
+                return;
+            }
+        }
+});
+</script>
+
 </body>
 </html>

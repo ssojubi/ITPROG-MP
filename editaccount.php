@@ -91,8 +91,9 @@ list($name, $birthdate, $contact) = mysqli_fetch_row($result);
             </div>
             <div class="form-group">
                 <label for="contact">Contact Number</label>
-                <?php echo '<input type="tel" id="contact" name="contact" value="'. $contact. '" required>'; ?>
-            </div>
+                <?php echo '<input type="tel" id="contact" name="contact" value="'. $contact. '" pattern="[0-9]+" minlength="10" maxlength="13" placeholder="+63 9XX XXX XXXX" required>'; ?>
+                <small style="color: #aaa; display: block; margin-top: 5px;">Format: +639XXXXXXXXX or 09XXXXXXXXX</small>
+           </div>
             <div class="form-group">
                 <label for="password">Enter Password</label>
                 <input type="password" id="password" name="password" required>
@@ -105,5 +106,19 @@ list($name, $birthdate, $contact) = mysqli_fetch_row($result);
     <footer>
         <p>&copy; 2025 The Premiere Club. All Rights Reserved.</p>
     </footer>
+    <script>
+document.getElementById("accountedit-form").addEventListener("submit", function(event) {
+    var contactNumber = document.getElementById("contact").value;
+    
+    // Validate Philippine phone number format
+    // Accepts formats: +639XXXXXXXXX, 09XXXXXXXXX, or 9XXXXXXXXX
+    var phonePattern = /^(\+63|0)?9\d{9}$/;
+    if (!phonePattern.test(contactNumber)) {
+        alert("Please enter a valid Philippine mobile number (e.g., +639XXXXXXXXX or 09XXXXXXXXX)");
+        event.preventDefault();
+        return;
+    }
+});
+</script>
 </body>
 </html>
