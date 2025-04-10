@@ -42,11 +42,10 @@ if(isset($_POST['add_user'])) {
         $stmt->close();
     }
 
-    if(!empty($contact)) {
-        // Validate Philippine phone number format
-        if(!preg_match('/^(\+63|0)?9\d{9}$/', $contact)) {
-            $errors[] = "Invalid Philippine mobile number format";
-        }   
+    if(empty($contact)) {
+        $errors[] = "Contact number is required";
+    } elseif(!preg_match('/^(\+63|0)?9\d{9}$/', $contact)) {
+        $errors[] = "Invalid Philippine mobile number format";
     }
     
     if(empty($birthdate)) {
@@ -127,18 +126,17 @@ if(isset($_POST['add_user'])) {
                                 <span class="error-text">Email already exists</span>
                             <?php endif; ?>
                         </div>
-                        
-                        <div class="form-group">
-                            <label for="contact">Contact Number</label>
-                            <input type="text" id="contact" name="contact" class="form-control" value="<?php echo isset($_POST['contact']) ? htmlspecialchars($_POST['contact']) : ''; ?>">
-                            <?php if(isset($errors) && in_array("Contact number is required", $errors)): ?>
-                                <span class="error-text">Contact number is required</span>
-                            <?php elseif(isset($errors) && in_array("Invalid Philippine mobile number format", $errors)): ?>
-                                <span class="error-text">Invalid Philippine mobile number format</span>
-                            <?php endif; ?>
-                        </div>
+                    <div class="form-group">
+                        <label for="contact">Contact Number</label>
+                        <input type="tel" id="contact" name="contact" class="form-control" pattern="[0-9]+" minlength="10" maxlength="13" placeholder="+63 9XX XXX XXXX" value="<?php echo isset($_POST['contact']) ? htmlspecialchars($_POST['contact']) : ''; ?>" required>
+                        <small style="color: #666; display: block; margin-top: 5px;">Format: +639XXXXXXXXX or 09XXXXXXXXX</small>
+                        <?php if(isset($errors) && in_array("Contact number is required", $errors)): ?>
+                            <span class="error-text">Contact number is required</span>
+                        <?php elseif(isset($errors) && in_array("Invalid Philippine mobile number format", $errors)): ?>
+                            <span class="error-text">Invalid Philippine mobile number format</span>
+                        <?php endif; ?>
                     </div>
-                    
+                                        
                     <div class="form-group">
                         <label for="birthdate">Birth Date</label>
                         <input type="date" id="birthdate" name="birthdate" class="form-control" value="<?php echo isset($_POST['birthdate']) ? htmlspecialchars($_POST['birthdate']) : ''; ?>">

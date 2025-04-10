@@ -231,16 +231,16 @@ CREATE TABLE accounts (
     email_address VARCHAR(45) PRIMARY KEY NOT NULL,
     account_name VARCHAR(45) NOT NULL,
     birth_date DATE NOT NULL,
-    contact_number int(11),
+    contact_number VARCHAR(20) NOT NULL,
     account_password VARCHAR(45) NOT NULL,
     account_type ENUM('admin', 'customer') DEFAULT 'customer'
 );
 
 -- add the into accounts table
 INSERT INTO `accounts` (`email_address`, `account_name`, `birth_date`, `contact_number`, `account_password`, `account_type`) VALUES
-("customer_one@gmail.com", "John Doe", '2000-11-16', 325557302, "customer1", "customer"),
-("customer_two@gmail.com", "Chris Evans", '1996-01-16', 335557426, "customer2", "customer"),
-("admin_one@gmail.com", "Bruce Wayne", '1975-04-08', 295555609, "admin1", "admin");
+("customer_one@gmail.com", "John Doe", '2000-11-16', '9325557302', "customer1", "customer"),
+("customer_two@gmail.com", "Chris Evans", '1996-01-16', '9335557426', "customer2", "customer"),
+("admin_one@gmail.com", "Bruce Wayne", '1975-04-08', '9295555609', "admin1", "admin");
 
 -- Create the seats table
 CREATE TABLE seats (
