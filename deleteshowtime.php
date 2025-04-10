@@ -4,14 +4,22 @@
     
     $showtimeid = $_POST['showtimeid'];
     $movieid = $_POST['movieid'];
+    $quantitybooked = $_POST['quantitybooked'];
 
     if(isset($_POST['delete'])) {
         $sql = "DELETE FROM showtimes
         WHERE showtime_id = '$showtimeid'";
 
-        $result = $conn->query($sql);
         $_SESSION['movieid'] = $movieid;
-        unset($_SESSION['error_message']);
-        header("location:viewshowtimes.php");
+
+        if($quantitybooked > 0) {
+            $_SESSION['error_message'] = "Can't delete showtimes with bookings.";
+            header("location:viewshowtimes.php");
+        }
+        else {
+            $result = $conn->query($sql);
+            unset($_SESSION['error_message']);
+            header("location:viewshowtimes.php");
+        }
     }
 ?>
