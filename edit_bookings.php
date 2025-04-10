@@ -110,7 +110,7 @@ if($result->num_rows == 0) {
 $booking = $result->fetch_assoc();
 $stmt->close();
 
-// Get available seats for the same cinema
+// Get available seats for the current cinema
 $seatsQuery = "SELECT s.seat_id, s.seat_row, s.seat_number, s.cinema_id
               FROM seats s
               WHERE s.cinema_id = ?
@@ -122,8 +122,8 @@ $stmt->execute();
 $seatsResult = $stmt->get_result();
 $stmt->close();
 
-// Get showtimes for the same movie
-$showtimesQuery = "SELECT st.showtime_id, st.showtime_date, st.time, c.name AS cinema_name
+// Get showtimes for the same movie, include cinema_id for each showtime
+$showtimesQuery = "SELECT st.showtime_id, st.showtime_date, st.time, c.name AS cinema_name, c.cinema_id
                   FROM showtimes st
                   JOIN cinemas c ON st.cinema_id = c.cinema_id
                   WHERE st.movie_id = ?
@@ -133,6 +133,10 @@ $stmt = $conn->prepare($showtimesQuery);
 $stmt->bind_param("i", $booking['movie_id']);
 $stmt->execute();
 $showtimesResult = $stmt->get_result();
+$showtimes = [];
+while($row = $showtimesResult->fetch_assoc()) {
+    $showtimes[] = $row;
+}
 $stmt->close();
 ?>
 
@@ -185,13 +189,34 @@ $stmt->close();
             <form method="POST">
                 <input type="hidden" name="original_seat_id" value="<?php echo $booking['seat_id']; ?>">
                 <input type="hidden" name="original_showtime_id" value="<?php echo $booking['showtime_id']; ?>">
+                <input type="hidden" id="original_cinema_id" value="<?php echo $booking['cinema_id']; ?>">
                 
                 <div class="form-section">
                     <h3 class="section-title">Booking Details</h3>
                     
                     <div class="form-group">
+                        <label for="showtime_id">Showtime</label>
+                        <select id="showtime_id" name="showtime_id" class="form-control" required>
+                            <?php foreach($showtimes as $showtime): ?>
+                                <?php 
+                                $formattedDate = date('M d, Y', strtotime($showtime['showtime_date']));
+                                $formattedTime = date('h:i A', strtotime($showtime['time']));
+                                $isSelected = $showtime['showtime_id'] == $booking['showtime_id'];
+                                ?>
+                                <option value="<?php echo $showtime['showtime_id']; ?>" 
+                                       data-cinema-id="<?php echo $showtime['cinema_id']; ?>"
+                                       <?php echo $isSelected ? 'selected' : ''; ?>>
+                                    <?php echo $formattedDate . ' at ' . $formattedTime . ' - ' . $showtime['cinema_name']; ?>
+                                </option>
+                            <?php endforeach; ?>
+                        </select>
+                        <small class="form-text">Note: Changing the showtime may affect seat availability and cinema layout</small>
+                    </div>
+                    
+                    <div class="form-group">
                         <label for="seat_id">Seat</label>
                         <select id="seat_id" name="seat_id" class="form-control" required>
+                            <?php $seatsResult->data_seek(0); ?>
                             <?php while($seat = $seatsResult->fetch_assoc()): ?>
                                 <?php 
                                 // Check if this seat is booked for the same showtime (excluding current booking)
@@ -218,23 +243,6 @@ $stmt->close();
                                 </option>
                             <?php endwhile; ?>
                         </select>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="showtime_id">Showtime</label>
-                        <select id="showtime_id" name="showtime_id" class="form-control" required>
-                            <?php while($showtime = $showtimesResult->fetch_assoc()): ?>
-                                <?php 
-                                $formattedDate = date('M d, Y', strtotime($showtime['showtime_date']));
-                                $formattedTime = date('h:i A', strtotime($showtime['time']));
-                                $isSelected = $showtime['showtime_id'] == $booking['showtime_id'];
-                                ?>
-                                <option value="<?php echo $showtime['showtime_id']; ?>" <?php echo $isSelected ? 'selected' : ''; ?>>
-                                    <?php echo $formattedDate . ' at ' . $formattedTime . ' - ' . $showtime['cinema_name']; ?>
-                                </option>
-                            <?php endwhile; ?>
-                        </select>
-                        <small class="form-text">Note: Changing the showtime may affect seat availability</small>
                     </div>
                 </div>
                 
@@ -266,45 +274,71 @@ $stmt->close();
         // Add dynamic seat validation when showtime changes
         document.getElementById('showtime_id').addEventListener('change', function() {
             const showtimeId = this.value;
-            const seatSelect = document.getElementById('seat_id');
-            const originalSeatId = <?php echo $booking['seat_id']; ?>;
             const originalShowtimeId = <?php echo $booking['showtime_id']; ?>;
+            const bookingId = <?php echo $booking_id; ?>;
+            const selectedOption = this.options[this.selectedIndex];
+            const newCinemaId = selectedOption.getAttribute('data-cinema-id');
+            const originalCinemaId = document.getElementById('original_cinema_id').value;
             
-            // Only check if showtime has changed
+            // Check if showtime has changed
             if(showtimeId != originalShowtimeId) {
-                // Use AJAX to check seat availability for the new showtime
-                const xhr = new XMLHttpRequest();
-                xhr.open('POST', 'check_seat_availability.php', true);
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.onload = function() {
-                    if(this.status === 200) {
-                        const bookedSeats = JSON.parse(this.responseText);
-                        
-                        // Reset all options
-                        for(let i = 0; i < seatSelect.options.length; i++) {
-                            const option = seatSelect.options[i];
-                            const seatId = option.value;
+                updateSeatsForCinema(newCinemaId, showtimeId, bookingId);
+            }
+        });
+        
+        function updateSeatsForCinema(cinemaId, showtimeId, bookingId) {
+            // First, get all seats for the new cinema
+            const xhr = new XMLHttpRequest();
+            xhr.open('POST', 'get_cinema_seats.php', true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                if(this.status === 200) {
+                    const seats = JSON.parse(this.responseText);
+                    const seatSelect = document.getElementById('seat_id');
+                    
+                    // Clear current options
+                    seatSelect.innerHTML = '';
+                    
+                    // Now get booked seats for this showtime
+                    const xhr2 = new XMLHttpRequest();
+                    xhr2.open('POST', 'check_seat_availability.php', true);
+                    xhr2.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr2.onload = function() {
+                        if(this.status === 200) {
+                            const bookedSeats = JSON.parse(this.responseText);
                             
-                            // Reset option text to remove "(Unavailable)" if it exists
-                            option.text = option.text.replace(' (Unavailable)', '');
-                            option.disabled = false;
-                            
-                            // Check if this seat is booked in the new showtime
-                            if(bookedSeats.includes(parseInt(seatId))) {
-                                option.disabled = true;
-                                option.text += ' (Unavailable)';
+                            // Add new options
+                            seats.forEach(function(seat) {
+                                const option = document.createElement('option');
+                                option.value = seat.seat_id;
                                 
-                                // If this was the selected seat, select the first available seat
-                                if(seatSelect.value === seatId) {
-                                    seatSelect.value = '';
+                                // Check if this seat is booked
+                                const isBooked = bookedSeats.includes(parseInt(seat.seat_id));
+                                let label = seat.seat_row + seat.seat_number;
+                                
+                                if(isBooked) {
+                                    label += ' (Unavailable)';
+                                    option.disabled = true;
+                                }
+                                
+                                option.textContent = label;
+                                seatSelect.appendChild(option);
+                            });
+                            
+                            // Select first available seat if any
+                            for(let i = 0; i < seatSelect.options.length; i++) {
+                                if(!seatSelect.options[i].disabled) {
+                                    seatSelect.selectedIndex = i;
+                                    break;
                                 }
                             }
                         }
-                    }
-                };
-                xhr.send('showtime_id=' + showtimeId + '&booking_id=' + <?php echo $booking_id; ?>);
-            }
-        });
+                    };
+                    xhr2.send('showtime_id=' + showtimeId + '&booking_id=' + bookingId);
+                }
+            };
+            xhr.send('cinema_id=' + cinemaId);
+        }
     </script>
 </body>
 </html>
