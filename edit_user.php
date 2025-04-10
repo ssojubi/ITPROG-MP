@@ -51,8 +51,12 @@ if(isset($_POST['update_user'])) {
         }
     }
     
-    if(empty($contact)) {
-        $errors[] = "Contact number is required";
+    // After the "Contact number is required" check
+    if(!empty($contact)) {
+        // Validate Philippine phone number format
+        if(!preg_match('/^(\+63|0)?9\d{9}$/', $contact)) {
+            $errors[] = "Invalid Philippine mobile number format";
+        }
     }
     
     if(empty($birthdate)) {
@@ -206,12 +210,15 @@ $stmt->close();
                         </div>
                         
                         <div class="form-group">
-                            <label for="contact">Contact Number</label>
-                            <input type="text" id="contact" name="contact" class="form-control" value="<?php echo htmlspecialchars($user['contact_number']); ?>">
-                            <?php if(isset($errors) && in_array("Contact number is required", $errors)): ?>
-                                <span class="error-text">Contact number is required</span>
-                            <?php endif; ?>
-                        </div>
+                        <label for="contact">Contact Number</label>
+                        <input type="tel" id="contact" name="contact" class="form-control" pattern="[0-9]+" minlength="10" maxlength="13" placeholder="+63 9XX XXX XXXX" value="<?php echo htmlspecialchars($user['contact_number']); ?>">
+                        <small style="color: #666; display: block; margin-top: 5px;">Format: +639XXXXXXXXX or 09XXXXXXXXX</small>
+                        <?php if(isset($errors) && in_array("Contact number is required", $errors)): ?>
+                            <span class="error-text">Contact number is required</span>
+                        <?php elseif(isset($errors) && in_array("Invalid Philippine mobile number format", $errors)): ?>
+                            <span class="error-text">Invalid Philippine mobile number format</span>
+                        <?php endif; ?>
+                    </div>
                     </div>
                     
                     <div class="form-group">
@@ -264,5 +271,20 @@ $stmt->close();
     <footer>
         <p>&copy; 2025 The Premiere Club. All Rights Reserved.</p>
     </footer>
+    <script>
+    document.querySelector('form[name="update_user"]').addEventListener('submit', function(event) {
+        var contactNumber = document.getElementById('contact').value;
+        
+        if(contactNumber) {
+            // Validate Philippine phone number format
+            var phonePattern = /^(\+63|0)?9\d{9}$/;
+            if (!phonePattern.test(contactNumber)) {
+                alert("Please enter a valid Philippine mobile number (e.g., +639XXXXXXXXX or 09XXXXXXXXX)");
+                event.preventDefault();
+                return;
+            }
+        }
+    });
+</script>
 </body>
 </html>
